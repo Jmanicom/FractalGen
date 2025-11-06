@@ -8,6 +8,7 @@
 static const int target_fps = 60;
 static const int window_w_init = 1920;
 static const int window_h_init = 1080;
+// static const int max_iter = 1200;
 
 // Define Settings
 static int window_w = window_w_init;
@@ -20,6 +21,17 @@ int main()
     window.setFramerateLimit(target_fps);
     window.setMouseCursorVisible(false);
     window.setKeyRepeatEnabled(false);
+
+    // Test for rendering shapes
+    sf::VertexArray triangle(sf::PrimitiveType::Triangles, 3);
+
+    triangle[0].position = sf::Vector2f(10.f, 10.f);
+    triangle[1].position = sf::Vector2f(100.f, 10.f);
+    triangle[2].position = sf::Vector2f(100.f, 100.f);
+
+    triangle[0].color = sf::Color::Red;
+    triangle[1].color = sf::Color::Blue;
+    triangle[2].color = sf::Color::Green;
 
 
 
@@ -38,6 +50,7 @@ int main()
         }
         
         window.clear(sf::Color::Black);
+        window.draw(triangle);
         window.display();
     }
 
