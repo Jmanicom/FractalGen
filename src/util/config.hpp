@@ -13,4 +13,13 @@ uint32_t const max_framerate = 144;
 int const max_iter = 200;
 bool const cursor_visible = false;
 bool const key_reapeat = false;
+
+// Initial fractal settings (defaults)
+const sf::Vector2f center_init = {-0.5f, 0.0f};
+const float zoom_init = 1.5f;
+
+
+// Control Settings (to be implemented)
+// const float zoom_speed = 1.1f;
+// const float pan_speed = 0.1f;
 }
