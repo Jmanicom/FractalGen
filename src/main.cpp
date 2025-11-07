@@ -21,16 +21,25 @@ int main()
     window.setMouseCursorVisible(cf::cursor_visible);
     window.setKeyRepeatEnabled(cf::key_reapeat);
 
-    // Test for rendering shapes
-    sf::VertexArray triangle(sf::PrimitiveType::Triangles, 3);
+    // after your existing initialization
+    sf::VertexArray screen(sf::PrimitiveType::TriangleStrip, 4);
+    screen[0].position = { 0.f, 0.f };
+    screen[1].position = { window_w, 0.f };
+    screen[2].position = { 0.f, window_h };
+    screen[3].position = { window_w, window_h };
 
-    triangle[0].position = sf::Vector2f(10.f, 10.f);
-    triangle[1].position = sf::Vector2f(100.f, 10.f);
-    triangle[2].position = sf::Vector2f(100.f, 100.f);
+    std::filesystem::path fragPath = std::filesystem::absolute("src/shaders/mandelbrot.frag");
+    sf::Shader fractalShader;
 
-    triangle[0].color = sf::Color::Red;
-    triangle[1].color = sf::Color::Blue;
-    triangle[2].color = sf::Color::Green;
+    if (!fractalShader.loadFromFile("shaders/mandelbrot.frag", sf::Shader::Type::Fragment)) {
+        std::cerr << "Failed to load shader!" << std::endl;
+        return -1;
+    }
+
+    // Set initial fractal parameters
+    sf::Vector2f center( -0.5f, 0.0f );
+    float zoom = 1.5f;
+    int maxIter = 300;
 
 
     while(window.isOpen()) {
@@ -38,11 +47,22 @@ int main()
         // Calls processEvents in event_handler.hpp under namespace ev
         ev::processEvents(window);
 
+        while (window.isOpen()) {
+        ev::processEvents(window);
+
+        // set uniforms before drawing
+        fractalShader.setUniform("u_resolution", sf::Vector2f(window_w, window_h));
+        fractalShader.setUniform("u_center", center);
+        fractalShader.setUniform("u_zoom", zoom);
+        fractalShader.setUniform("u_maxIter", maxIter);
+
         window.clear(sf::Color::Black);
-        window.draw(triangle);
+        window.draw(screen, &fractalShader);
         window.display();
+        }
 
     }
 
     return 0;
+
 }
