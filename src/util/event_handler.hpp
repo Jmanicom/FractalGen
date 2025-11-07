@@ -1,11 +1,25 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include "util/config.hpp"
 #include <iostream>
 
-namespace ev {                                  // Create namespace for event handling
+struct FractalState {
 
-    void processEvents(sf::Window& window)      // Take in reference to window object from main.cpp
+    sf::Vector2f center = cf::center_init;
+    float zoom = cf::zoom_init;
+    float colorOffset = 0.0f;
+
+    void reset() {
+        center = cf::center_init;
+        zoom = cf::zoom_init;
+    }
+
+};
+
+namespace ev {                                                       // Create namespace for event handling
+
+    void processEvents(sf::Window& window, FractalState& state)      // Take in reference to window object from main.cpp
     {
         while (const std::optional event = window.pollEvent()) {
                 if (event->is<sf::Event::Closed>()) {
