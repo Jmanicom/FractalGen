@@ -40,7 +40,7 @@ int main()
     while(window.isOpen()) {
         
         // Calls processEvents in event_handler.hpp under namespace ev
-        ev::processEvents(window, state);
+        ev::processEvents(window, state, window_w, window_h);
 
         // state.colorOffset += 0.0001f;  Animate colors over time (Optional)
 
