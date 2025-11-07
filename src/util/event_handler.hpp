@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "util/config.hpp"
+#include "config.hpp"
 #include <iostream>
 
 struct FractalState {
