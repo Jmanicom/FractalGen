@@ -35,25 +35,22 @@ int main()
         return -1;
     }
 
-    // Set initial fractal parameters
-    sf::Vector2f center( -0.5f, 0.0f );
-    float zoom = 1.5f;
-    int maxIter = cf::max_iter;
-    float colorOffset = 0.0f;
+    FractalState state;
 
     while(window.isOpen()) {
         
         // Calls processEvents in event_handler.hpp under namespace ev
-        ev::processEvents(window);
+        ev::processEvents(window, state);
 
-        colorOffset += 1.5f; // Animate colors over time
+        state.colorOffset += 1.5f; // Animate colors over time
 
 
         // set uniforms before drawing
         fractalShader.setUniform("u_resolution", sf::Vector2f(window_w, window_h));
-        fractalShader.setUniform("u_center", center);
-        fractalShader.setUniform("u_zoom", zoom);
-        fractalShader.setUniform("u_maxIter", maxIter);
+        fractalShader.setUniform("u_center", state.center);
+        fractalShader.setUniform("u_zoom", state.zoom);
+        fractalShader.setUniform("u_maxIter", cf::max_iter);
+        fractalShader.setUniform("u_colorOffset", state.colorOffset);
 
         window.clear(sf::Color::Black);
         window.draw(screen, &fractalShader);
