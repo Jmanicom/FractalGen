@@ -4,6 +4,7 @@
 
 namespace cf
 {
+// Default Settings to be used in Sim
 
 // Window Config
 sf::Vector2u const window_size = {1920, 1080};
