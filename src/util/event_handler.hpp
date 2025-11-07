@@ -23,7 +23,7 @@ struct FractalState {
 
 };
 
-namespace ev {                                                       // Create namespace for event handling
+namespace ev {                                                                                       // Create namespace for event handling
 
     void processEvents(sf::Window& window, FractalState& state, float window_w, float window_h)      // Take in reference to window object from main.cpp
     {
