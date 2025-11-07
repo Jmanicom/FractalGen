@@ -42,7 +42,7 @@ int main()
         // Calls processEvents in event_handler.hpp under namespace ev
         ev::processEvents(window, state);
 
-        state.colorOffset += 1.5f; // Animate colors over time
+        // state.colorOffset += 0.0001f;  Animate colors over time (Optional)
 
 
         // set uniforms before drawing
