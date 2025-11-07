@@ -9,8 +9,8 @@
 
 
 // Define Settings
-static int window_w = cf::window_size.x;
-static int window_h = cf::window_size.y;
+static float window_w = cf::window_size_f.x;
+static float window_h = cf::window_size_f.y;
 
 
 int main()
