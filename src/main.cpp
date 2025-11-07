@@ -15,10 +15,11 @@ static int window_h = conf::window_size.y;
 
 int main()
 {
+    // Refer to config.hpp for changing window settings
     sf::RenderWindow window(sf::VideoMode({conf::window_size.x, conf::window_size.y}), "Fractal", sf::Style::Default);
     window.setFramerateLimit(conf::max_framerate);
-    window.setMouseCursorVisible(false);
-    window.setKeyRepeatEnabled(false);
+    window.setMouseCursorVisible(conf::cursor_visible);
+    window.setKeyRepeatEnabled(conf::key_reapeat);
 
     // Test for rendering shapes
     sf::VertexArray triangle(sf::PrimitiveType::Triangles, 3);
@@ -34,7 +35,9 @@ int main()
 
     while(window.isOpen()) {
         
+        // Calls processEvents in event_handler.hpp under namespace ev
         ev::processEvents(window);
+
         window.clear(sf::Color::Black);
         window.draw(triangle);
         window.display();
