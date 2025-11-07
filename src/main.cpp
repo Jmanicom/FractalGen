@@ -28,7 +28,6 @@ int main()
     screen[2].position = { 0.f, window_h };
     screen[3].position = { window_w, window_h };
 
-    std::filesystem::path fragPath = std::filesystem::absolute("src/shaders/mandelbrot.frag");
     sf::Shader fractalShader;
 
     if (!fractalShader.loadFromFile("shaders/mandelbrot.frag", sf::Shader::Type::Fragment)) {
@@ -39,16 +38,16 @@ int main()
     // Set initial fractal parameters
     sf::Vector2f center( -0.5f, 0.0f );
     float zoom = 1.5f;
-    int maxIter = 300;
-
+    int maxIter = cf::max_iter;
+    float colorOffset = 0.0f;
 
     while(window.isOpen()) {
         
         // Calls processEvents in event_handler.hpp under namespace ev
         ev::processEvents(window);
 
-        while (window.isOpen()) {
-        ev::processEvents(window);
+        colorOffset += 1.5f; // Animate colors over time
+
 
         // set uniforms before drawing
         fractalShader.setUniform("u_resolution", sf::Vector2f(window_w, window_h));
@@ -59,7 +58,6 @@ int main()
         window.clear(sf::Color::Black);
         window.draw(screen, &fractalShader);
         window.display();
-        }
 
     }
 
