@@ -20,6 +20,6 @@ const float zoom_init = 1.5f;
 
 
 // Control Settings (to be implemented)
-// const float zoom_speed = 1.1f;
-// const float pan_speed = 0.1f;
+const float zoom_speed = 1.1f;
+const float pan_speed = 0.1f;
 }

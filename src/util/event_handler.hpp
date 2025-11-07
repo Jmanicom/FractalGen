@@ -22,6 +22,9 @@ namespace ev {                                                       // Create n
     void processEvents(sf::Window& window, FractalState& state)      // Take in reference to window object from main.cpp
     {
         while (const std::optional event = window.pollEvent()) {
+
+            float panAmount = cf::pan_speed * state.zoom;
+
                 if (event->is<sf::Event::Closed>()) {
                     window.close();
                     break;
@@ -30,8 +33,15 @@ namespace ev {                                                       // Create n
                         window.close();
                         break;
                 }   if (keyPressed->scancode == sf::Keyboard::Scancode::R) {
-                        window.close(); // test for event handling
-                        break;
+                        state.reset();
+                }   if (keyPressed->scancode == sf::Keyboard::Scancode::W) {
+                        state.center.y += panAmount;
+                }   if (keyPressed->scancode == sf::Keyboard::Scancode::D) {
+                        state.center.x += panAmount;
+                }   if (keyPressed->scancode == sf::Keyboard::Scancode::S) {
+                        state.center.y -= panAmount;
+                }   if (keyPressed->scancode == sf::Keyboard::Scancode::A) {
+                        state.center.x -= panAmount;
                 }
             }
         }
