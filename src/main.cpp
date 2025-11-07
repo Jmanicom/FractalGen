@@ -9,17 +9,17 @@
 
 
 // Define Settings
-static int window_w = conf::window_size.x;
-static int window_h = conf::window_size.y;
+static int window_w = cf::window_size.x;
+static int window_h = cf::window_size.y;
 
 
 int main()
 {
     // Refer to config.hpp for changing window settings
-    sf::RenderWindow window(sf::VideoMode({conf::window_size.x, conf::window_size.y}), "Fractal", sf::Style::Default);
-    window.setFramerateLimit(conf::max_framerate);
-    window.setMouseCursorVisible(conf::cursor_visible);
-    window.setKeyRepeatEnabled(conf::key_reapeat);
+    sf::RenderWindow window(sf::VideoMode({cf::window_size.x, cf::window_size.y}), "Fractal", sf::Style::Default);
+    window.setFramerateLimit(cf::max_framerate);
+    window.setMouseCursorVisible(cf::cursor_visible);
+    window.setKeyRepeatEnabled(cf::key_reapeat);
 
     // Test for rendering shapes
     sf::VertexArray triangle(sf::PrimitiveType::Triangles, 3);

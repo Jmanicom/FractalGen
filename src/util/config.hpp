@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 
-namespace conf
+namespace cf
 {
 
 // Window Config
