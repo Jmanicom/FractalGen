@@ -4,13 +4,15 @@ project(FractalGen)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# If SFML is installed system-wide:
+# Find SFML
 find_package(SFML 3 COMPONENTS Graphics Window System REQUIRED)
 
-add_executable(FractalGen main.cpp)
+# Add executable - just main.cpp if event_handler is header-only
+add_executable(main main.cpp)
 
+# Configure the target
 target_include_directories(main PRIVATE
-    ${CMAKE_SOURCE_DIR}/src/util
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 target_link_libraries(main PRIVATE
@@ -19,10 +21,11 @@ target_link_libraries(main PRIVATE
     sfml-system
 )
 
-file (COPY ${CMAKE_SOURCE_DIR}/src/shaders
-        DESTINATION ${CMAKE_BINARY_DIR})
+# Copy shaders to build directory
+file(COPY ${CMAKE_SOURCE_DIR}/shaders 
+     DESTINATION ${CMAKE_BINARY_DIR})
 
-# For MinGW or MSVC, you may need to add these system libs:
+# For Windows
 if (WIN32)
     target_link_libraries(main PRIVATE
         opengl32
