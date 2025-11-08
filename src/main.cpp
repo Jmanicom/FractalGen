@@ -50,7 +50,7 @@ int main()
         fractalShader.setUniform("u_center", state.center);
         fractalShader.setUniform("u_zoom", state.zoom);
         fractalShader.setUniform("u_maxIter", cf::max_iter);
-        fractalShader.setUniform("u_colorOffset", state.colorOffset);
+        //fractalShader.setUniform("u_colorOffset", state.colorOffset);
 
         window.clear(sf::Color::Black);
         window.draw(screen, &fractalShader);
