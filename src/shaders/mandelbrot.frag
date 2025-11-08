@@ -8,16 +8,27 @@ uniform float u_colorOffset;
 
 out vec4 FragColor;
 
+// High quality color palette function
+vec3 palette(float t) {
+    vec3 a = vec3(0.5, 0.5, 0.5);
+    vec3 b = vec3(0.5, 0.5, 0.5);
+    vec3 c = vec3(1.0, 1.0, 1.0);
+    vec3 d = vec3(0.00, 0.33, 0.67);
+    
+    return a + b * cos(6.28318 * (c * t + d + u_colorOffset));
+}
+
 void main() {
     // Convert pixel coordinates to complex plane
     vec2 uv = (gl_FragCoord.xy / u_resolution) * 2.0 - 1.0;
-    uv.x *= u_resolution.x / u_resolution.y; // aspect ratio correction
+    uv.x *= u_resolution.x / u_resolution.y;
     
     vec2 c = u_center + uv * u_zoom;
     
     // Mandelbrot iteration
     vec2 z = vec2(0.0, 0.0);
     int iter;
+    float zLen2 = 0.0;  // Store squared length for better precision
     
     for (iter = 0; iter < u_maxIter; iter++) {
         // z = z^2 + c
@@ -25,35 +36,26 @@ void main() {
         float y = 2.0 * z.x * z.y + c.y;
         z = vec2(x, y);
         
-        if (length(z) > 2.0) break;
+        zLen2 = z.x * z.x + z.y * z.y;
+        if (zLen2 > 4.0) break;
     }
     
-    // Color mapping
+    // High quality coloring
     if (iter == u_maxIter) {
-        FragColor = vec4(0.0, 0.0, 0.0, 1.0); // Black for points in the set
+        FragColor = vec4(0.0, 0.0, 0.0, 1.0);
     } else {
-        // Smooth iteration count to avoid color banding
-        float smoothIter = float(iter) + 1.0 - log(log(length(z))) / log(2.0);
-        float t = smoothIter / 50.0 + u_colorOffset; // Add color offset for animation
+        // Smooth iteration with better precision
+        float smoothIter = float(iter) + 1.0 - log2(log2(zLen2) / 2.0);
         
-        // Define vibrant color palette
-        vec3 color1 = vec3(0.0, 0.02, 0.2);   // Dark blue
-        vec3 color2 = vec3(0.5, 0.0, 0.5);     // Purple
-        vec3 color3 = vec3(1.0, 0.5, 0.0);     // Orange
-        vec3 color4 = vec3(1.0, 1.0, 0.5);     // Yellow
+        // Normalized iteration value
+        float t = smoothIter / 50.0;
         
-        float m = mod(t, 4.0);
-        vec3 color;
+        // Apply high quality color palette
+        vec3 color = palette(t);
         
-        if (m < 1.0) {
-            color = mix(color1, color2, m);
-        } else if (m < 2.0) {
-            color = mix(color2, color3, m - 1.0);
-        } else if (m < 3.0) {
-            color = mix(color3, color4, m - 2.0);
-        } else {
-            color = mix(color4, color1, m - 3.0);
-        }
+        // Optional: Add subtle brightness variation for depth
+        float brightness = 0.7 + 0.3 * sin(smoothIter * 0.1);
+        color *= brightness;
         
         FragColor = vec4(color, 1.0);
     }
