@@ -36,6 +36,7 @@ int main()
     }
 
     FractalState state;
+    sf::Vector2f juliaconst = cf::julia_c;
 
     while(window.isOpen()) {
         
@@ -51,8 +52,9 @@ int main()
         fractalShader.setUniform("u_zoom", state.zoom);
         fractalShader.setUniform("u_maxIter", cf::max_iter);
         fractalShader.setUniform("u_colorOffset", state.colorOffset);
-        fractalShader.setUniform("u_juliaC", cf::julia_c);
+        fractalShader.setUniform("u_juliaC", juliaconst);
 
+        juliaconst += {0.0001f, 0.0001f};
         window.clear(sf::Color::Black);
         window.draw(screen, &fractalShader);
         window.display();
