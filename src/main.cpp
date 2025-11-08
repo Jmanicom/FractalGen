@@ -16,7 +16,7 @@ static float window_h = cf::window_size_f.y;
 int main()
 {
     // Refer to config.hpp for changing window settings
-    sf::RenderWindow window(sf::VideoMode({cf::window_size.x, cf::window_size.y}), "Fractal", sf::Style::Default);
+    sf::RenderWindow window(sf::VideoMode({cf::window_size.x, cf::window_size.y}), "Fractal", sf::Style::Default, sf::State::Fullscreen);
     window.setFramerateLimit(cf::max_framerate);
     window.setMouseCursorVisible(cf::cursor_visible);
     window.setKeyRepeatEnabled(cf::key_reapeat);
@@ -42,7 +42,7 @@ int main()
         // Calls processEvents in event_handler.hpp under namespace ev
         ev::processEvents(window, state, window_w, window_h);
 
-        // state.colorOffset += 0.0001f;  Animate colors over time (Optional)
+        // state.colorOffset += 0.00001f;  // Animate colors over time (Optional)
 
 
         // set uniforms before drawing
