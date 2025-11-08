@@ -30,7 +30,7 @@ int main()
 
     sf::Shader fractalShader;
 
-    if (!fractalShader.loadFromFile("shaders/mandelbrot.frag", sf::Shader::Type::Fragment)) {
+    if (!fractalShader.loadFromFile("shaders/julia.frag", sf::Shader::Type::Fragment)) {
         std::cerr << "Failed to load shader!" << std::endl;
         return -1;
     }
@@ -50,7 +50,8 @@ int main()
         fractalShader.setUniform("u_center", state.center);
         fractalShader.setUniform("u_zoom", state.zoom);
         fractalShader.setUniform("u_maxIter", cf::max_iter);
-        //fractalShader.setUniform("u_colorOffset", state.colorOffset);
+        fractalShader.setUniform("u_colorOffset", state.colorOffset);
+        fractalShader.setUniform("u_juliaC", cf::julia_c);
 
         window.clear(sf::Color::Black);
         window.draw(screen, &fractalShader);
