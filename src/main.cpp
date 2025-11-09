@@ -2,11 +2,7 @@
 #include <SFML/OpenGL.hpp>
 #include "util/event_handler.hpp"
 #include "util/config.hpp"
-
 #include <iostream>
-#include <complex>
-#include <math.h>
-
 
 // Define Settings
 static float window_w = cf::window_size_f.x;
@@ -28,20 +24,25 @@ int main()
     screen[2].position = { 0.f, window_h };
     screen[3].position = { window_w, window_h };
 
-    sf::Shader fractalShader;
+    FractalState state;         // Init fractal state
+    sf::Shader fractalShader;   // Init fractalShader
 
-    if (!fractalShader.loadFromFile("shaders/julia.frag", sf::Shader::Type::Fragment)) {
+    // Check if shaders are supported
+    if (!sf::Shader::isAvailable()) {
+        std::cerr << "Shaders are unsupported on this system!" << std::endl;
+        return -1;
+    }
+
+    // Load default fragment shader
+    if (!fractalShader.loadFromFile(state.shader_init, sf::Shader::Type::Fragment)) {
         std::cerr << "Failed to load shader!" << std::endl;
         return -1;
     }
 
-    FractalState state;
-    sf::Vector2f juliaconst = cf::julia_c;
-
     while(window.isOpen()) {
         
         // Calls processEvents in event_handler.hpp under namespace ev
-        ev::processEvents(window, state, window_w, window_h);
+        ev::processEvents(window, state, fractalShader, window_w, window_h);
 
         // state.colorOffset += 0.00001f;  // Animate colors over time (Optional)
 
@@ -52,9 +53,12 @@ int main()
         fractalShader.setUniform("u_zoom", state.zoom);
         fractalShader.setUniform("u_maxIter", cf::max_iter);
         fractalShader.setUniform("u_colorOffset", state.colorOffset);
-        fractalShader.setUniform("u_juliaC", juliaconst);
 
-        juliaconst += {0.0001f, 0.0001f};
+        if (state.active_shader == "shaders/julia.frag") {
+            fractalShader.setUniform("u_juliaC", state.juliaconst);
+            state.juliaconst += {-0.0001f, 0.0001f};
+        }
+        
         window.clear(sf::Color::Black);
         window.draw(screen, &fractalShader);
         window.display();
