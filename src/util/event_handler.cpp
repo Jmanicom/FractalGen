@@ -71,19 +71,16 @@ void processEvents(sf::Window& window, FractalState& state, sf::Shader& fractalS
                         break;
                 // Reset view to default
                 }   if (keyPressed->scancode == sf::Keyboard::Scancode::R) {
-                        state.reset();
+                        state.reset(state.juliaconst);
                 // Keyboard Panning
-                }   if (keyPressed->scancode == sf::Keyboard::Scancode::W) {
-                        state.center.y += panAmount;
-                }   if (keyPressed->scancode == sf::Keyboard::Scancode::D) {
-                        state.center.x += panAmount;
-                }   if (keyPressed->scancode == sf::Keyboard::Scancode::S) {
-                        state.center.y -= panAmount;
-                }   if (keyPressed->scancode == sf::Keyboard::Scancode::A) {
-                        state.center.x -= panAmount;
+                }   if (keyPressed->scancode >= sf::Keyboard::Scancode::Num1 && keyPressed->scancode <= sf::Keyboard::Scancode::Num2) {
+                        int idx = static_cast<int>(keyPressed->scancode) - static_cast<int>(sf::Keyboard::Scancode::Num1);
+                        state.active_shader = state.all_fractals[idx];
+                        if (!fractalShader.loadFromFile(state.active_shader, sf::Shader::Type::Fragment)) {
+                            std::cerr << "Failed to load shader!" << std::endl;
+                        }                
                 }
             }
         }
     }
-    
 }
