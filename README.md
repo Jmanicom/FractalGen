@@ -14,10 +14,13 @@ Controls
 -------------
 * Esc - Exit Window
 * Left Mouse - Drag to pan view
+* Middle Mouse - Toggle Cursor Visible
 * Scroll Wheel - Zoom in and out
-* C - Toggle Color
-* F11 - Toggle Fullscreen
-* S - Save Screenshot
 * R - Reset View
+* 1 - Mandelbrot Set
+* 2 - Julia Set
+* C - Toggle Color (Not functional)
+* F11 - Toggle Fullscreen (Not functional)
+* S - Save Screenshot (Not functional)
 
 (Not all features are functional, early working version)
