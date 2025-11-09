@@ -11,11 +11,11 @@ find_package(SFML 3 COMPONENTS Graphics Window System REQUIRED)
 add_executable(FractalGen src/main.cpp)
 
 # Configure the target
-target_include_directories(main PRIVATE
+target_include_directories(FractalGen PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/util
 )
 
-target_link_libraries(main PRIVATE
+target_link_libraries(FractalGen PRIVATE
     sfml-graphics
     sfml-window
     sfml-system
@@ -27,7 +27,7 @@ file(COPY ${CMAKE_SOURCE_DIR}/src/shaders
 
 # For Windows
 if (WIN32)
-    target_link_libraries(main PRIVATE
+    target_link_libraries(FractalGen PRIVATE
         opengl32
         winmm
         gdi32
