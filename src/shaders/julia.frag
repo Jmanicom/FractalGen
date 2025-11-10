@@ -36,14 +36,14 @@ void main() {
         FragColor = vec4(0.0, 0.0, 0.0, 1.0);
     } else {
         // Smooth coloring
-        float smoothIter = float(iter) + 1.0 - log2(log2(zLen2));
+        float smoothIter = float(iter) + 1.0 - log2(log2(abs(zLen2)));
         float t = smoothIter / float(u_maxIter);
 
-        // Deep, moody dark-blue palette inspired by 2swap
-        vec3 color1 = vec3(0.00, 0.00, 0.05);  // near-black navy
-        vec3 color2 = vec3(0.02, 0.05, 0.25);  // deep indigo
-        vec3 color3 = vec3(0.10, 0.25, 0.60);  // mid blue
-        vec3 color4 = vec3(0.80, 0.90, 1.00);  // cool pale white-blue
+        // Deep, moody dark-blue palette
+        vec3 color1 = vec3(0.0, 0.0, 0.05);   // almost black navy deepBlue
+        vec3 color2  = vec3(0.02, 0.05, 0.25);   // darker indigo midBlue
+        vec3 color3 = vec3(0.15, 0.25, 0.9);  // vivid electric blue brightBlue
+        vec3 color4 = vec3(0.9, 0.95, 1.0);    // outer glow white-blue whiteGlow
 
         // Gradient blending
         float shade = pow(t, 0.45);
