@@ -11,8 +11,12 @@ static float window_h = cf::window_size_f.y;
 
 int main()
 {
+    // Enable 8x MSAA antialiasing
+    sf::ContextSettings settings;
+    settings.antiAliasingLevel = 8;
+
     // Refer to config.hpp for changing window settings
-    sf::RenderWindow window(sf::VideoMode({cf::window_size.x, cf::window_size.y}), "Fractal", sf::Style::Default, sf::State::Fullscreen);
+    sf::RenderWindow window(sf::VideoMode({cf::window_size.x, cf::window_size.y}), "Fractal", sf::Style::Default, sf::State::Fullscreen, settings);
     window.setFramerateLimit(cf::max_framerate);
     window.setMouseCursorVisible(cf::cursor_visible);
     window.setKeyRepeatEnabled(cf::key_reapeat);
