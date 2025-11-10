@@ -28,7 +28,7 @@ struct FractalState {
         center = cf::center_init;
         zoom = cf::zoom_init;
         if (active_shader == "shaders/julia.frag") {
-            C = {0.0f, 0.0f};
+            C = cf::julia_c;
         }
     }
 
