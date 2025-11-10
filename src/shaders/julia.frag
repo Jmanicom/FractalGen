@@ -31,37 +31,33 @@ void main() {
         if (zLen2 > 4.0) break;
     }
     
-    // High quality dark color palette
+   // --- Color calculation ---
     if (iter == u_maxIter) {
         FragColor = vec4(0.0, 0.0, 0.0, 1.0);
     } else {
-        // Improved smooth iteration count
-        float smoothIter = float(iter) + 1.0 - log2(log2(zLen2) / 2.0);
-        float t = smoothIter / 50.0 + u_colorOffset;
-        
-        // Darker, richer color palette
-        vec3 color1 = vec3(0.0, 0.01, 0.1);
-        vec3 color2 = vec3(0.2, 0.0, 0.3);
-        vec3 color3 = vec3(0.6, 0.2, 0.0);
-        vec3 color4 = vec3(0.8, 0.6, 0.1);
-        
-        float m = mod(t, 4.0);
-        vec3 color;
-        
-        if (m < 1.0) {
-            color = mix(color1, color2, smoothstep(0.0, 1.0, m));
-        } else if (m < 2.0) {
-            color = mix(color2, color3, smoothstep(0.0, 1.0, m - 1.0));
-        } else if (m < 3.0) {
-            color = mix(color3, color4, smoothstep(0.0, 1.0, m - 2.0));
-        } else {
-            color = mix(color4, color1, smoothstep(0.0, 1.0, m - 3.0));
-        }
-        
-        float brightness = 0.85 + 0.15 * sin(smoothIter * 0.05);
-        color *= brightness;
-        color = pow(color, vec3(1.1));
-        
+        float smoothIter = float(iter) + 1.0 - log2(log2(zLen2));
+        float t = smoothIter / float(u_maxIter);
+
+        // Tuned palette
+        vec3 color1 = vec3(0.0, 0.0, 0.05);   // almost black navy deepBlue
+        vec3 color2  = vec3(0.02, 0.05, 0.25);   // darker indigo midBlue
+        vec3 color3 = vec3(0.15, 0.25, 0.9);  // vivid electric blue brightBlue
+        vec3 color4 = vec3(0.9, 0.95, 1.0);    // outer glow white-blue whiteGlow
+
+        // smoother gradient blending
+        float shade = pow(t, 0.4);
+        vec3 color = mix(color1, color2, smoothstep(0.0, 0.2, shade));
+        color = mix(color, color3, smoothstep(0.2, 0.8, shade));
+        color = mix(color, color4, smoothstep(0.8, 1.0, shade));
+
+        // contrast boost & gamma correction
+        color = pow(color, vec3(0.9));
+        color *= 1.0;
+
+        // optional subtle shimmer
+        color *= 0.9 + 0.1 * sin(t * 30.0 + u_colorOffset * 10.0);
+
         FragColor = vec4(color, 1.0);
     }
+
 }
