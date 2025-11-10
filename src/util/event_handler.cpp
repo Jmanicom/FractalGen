@@ -1,6 +1,7 @@
 #include "event_handler.hpp"
 #include "config.hpp"
 #include <iostream>
+#include <math.h>
 
 namespace ev
 {
@@ -24,11 +25,8 @@ void processEvents(sf::Window& window, FractalState& state, sf::Shader& fractalS
 
                     sf::Vector2f mouseBeforeZoom = state.center + mouseNorm * state.zoom;
                     
-                    if (mouseIn->delta > 0) {
-                        state.zoom /= cf::zoom_speed;
-                    } else {
-                        state.zoom *= cf::zoom_speed;
-                    }
+                    float zoomFactor = std::pow(cf::zoom_speed, (mouseIn->delta > 0 ? -1.0f : 1.0f));
+                    state.zoom *= zoomFactor;
 
                     sf::Vector2f mouseAfterZoom = state.center + mouseNorm * state.zoom;
                     state.center += mouseBeforeZoom - mouseAfterZoom;
