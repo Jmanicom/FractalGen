@@ -24,5 +24,5 @@ const float zoom_init = 1.5f;
 const float zoom_speed = 1.1f;
 const float pan_speed = 0.1f;
 
-const sf::Vector2f julia_c = {0.0f, 0.0f};
+const sf::Vector2f julia_c = {-0.8f, 0.156f};
 }
