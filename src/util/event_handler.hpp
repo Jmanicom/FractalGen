@@ -7,9 +7,13 @@
 
 struct FractalState {
 
+    // Window-related settings
     sf::Vector2f center = cf::center_init;
     float zoom = cf::zoom_init;
     float colorOffset = 0.0f;
+
+    // Shader settings
+    bool isPaused = true;
     sf::Vector2f juliaconst = cf::julia_c;
     std::string shader_init = "shaders/mandelbrot.frag";
     std::string active_shader = shader_init;
@@ -19,6 +23,7 @@ struct FractalState {
     bool cursorVisible = cf::cursor_visible;
     sf::Vector2i lastMousePos;
 
+    // List of all fractals
     std::array<std::string, 2> all_fractals = {
         "shaders/mandelbrot.frag",
         "shaders/julia.frag"

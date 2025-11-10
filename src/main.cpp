@@ -56,7 +56,8 @@ int main()
 
         if (state.active_shader == "shaders/julia.frag") {
             fractalShader.setUniform("u_juliaC", state.juliaconst);
-            state.juliaconst += {-0.0001f, 0.0001f};
+            if (!state.isPaused)
+                state.juliaconst += {-0.0001f, 0.0001f};
         }
         
         window.clear(sf::Color::Black);

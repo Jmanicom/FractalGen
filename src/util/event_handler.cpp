@@ -70,6 +70,8 @@ void processEvents(sf::Window& window, FractalState& state, sf::Shader& fractalS
                         window.close();
                         break;
                 // Reset view to default
+                }   if (keyPressed->scancode == sf::Keyboard::Scancode::Space) {
+                        state.isPaused = !state.isPaused;
                 }   if (keyPressed->scancode == sf::Keyboard::Scancode::R) {
                         state.reset(state.juliaconst);
                 // Keyboard Panning
