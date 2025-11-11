@@ -9,6 +9,11 @@ The main resource used in the production of this project comes from [SFML docume
   <img src="photos/MandelBrot.png" alt="MandelBrot Render"/>
 </p>
 
+# How to Use
+
+This project was built using g++ and its ucrt64 compiler with SFML and openGL on its includepath. With that being said, the easiest way to compile it then would be to do the same and run this terminal command:
+
+`g++ main.cpp util/event_handler.cpp -I util -I shaders -lsfml-graphics -lsfml-window -lsfml-system -lopengl32 -o main`
 
 Controls
 -------------
