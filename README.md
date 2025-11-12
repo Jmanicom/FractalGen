@@ -6,7 +6,7 @@ This project was started as a learning exercise in C++ and SFML/OpenGL.
 The main resource used in the production of this project comes from [SFML documentation](https://www.sfml-dev.org/documentation/3.0.2/)
 
 <p align="center">
-  <img src="Media/Julia.gif" alt="Julia Set Render"/>
+  <img src="Media/Julia.gif" alt="Julia Set Render" width="800" height="600"/>
 </p>
 
 # How to Use
