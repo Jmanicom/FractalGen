@@ -16,7 +16,7 @@ int main()
     settings.antiAliasingLevel = 8;
 
     // Refer to config.hpp for changing window settings
-    sf::RenderWindow window(sf::VideoMode({cf::window_size.x, cf::window_size.y}), "Fractal", sf::Style::Default, sf::State::Fullscreen, settings);
+    sf::RenderWindow window(sf::VideoMode({cf::window_size.x, cf::window_size.y}), "Fractal", sf::Style::Default, sf::State::Windowed, settings);
     window.setFramerateLimit(cf::max_framerate);
     window.setMouseCursorVisible(cf::cursor_visible);
     window.setKeyRepeatEnabled(cf::key_reapeat);
@@ -61,7 +61,7 @@ int main()
         if (state.active_shader == "shaders/julia.frag") {
             fractalShader.setUniform("u_juliaC", state.juliaconst);
             if (!state.isPaused)
-                state.juliaconst += {-0.0001f, 0.0001f};
+                state.juliaconst += {0.00005f, -0.00005f};
         }
         
         window.clear(sf::Color::Black);
