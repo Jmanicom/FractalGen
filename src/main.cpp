@@ -56,7 +56,6 @@ int main()
         fractalShader.setUniform("u_center", state.center);
         fractalShader.setUniform("u_zoom", state.zoom);
         fractalShader.setUniform("u_maxIter", cf::max_iter);
-        fractalShader.setUniform("u_colorOffset", state.colorOffset);
 
         if (state.active_shader == "shaders/julia.frag") {
             fractalShader.setUniform("u_juliaC", state.juliaconst);
