@@ -44,3 +44,4 @@ The following lists below and their respective images are various color pallatte
 * vec3 color4 = vec3(0.1, 0.3, 0.7);     // Deep blue
 * vec3 color5 = vec3(0.3, 0.6, 0.9);     // Light blue
 * vec3 color6 = vec3(0.7, 0.85, 0.95);   // Cyan-white
+-----
