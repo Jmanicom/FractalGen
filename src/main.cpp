@@ -3,6 +3,8 @@
 #include "util/event_handler.hpp"
 #include "util/config.hpp"
 #include <iostream>
+#include <math.h>
+#include <algorithm>
 
 // Define Settings
 static float window_w = cf::window_size_f.x;
@@ -42,6 +44,7 @@ int main()
         std::cerr << "Failed to load shader!" << std::endl;
         return -1;
     }
+    float theta = 0;
 
     while(window.isOpen()) {
         
@@ -59,10 +62,17 @@ int main()
 
         if (state.active_shader == "shaders/julia.frag") {
             fractalShader.setUniform("u_juliaC", state.juliaconst);
-            if (!state.isPaused)
-                state.juliaconst += {0.00005f, -0.00005f};
+            if (!state.isPaused) {
+                theta += 0.01f;
+                float speed = 0.0002f;
+
+                state.juliaconst.x += speed *cos(theta*0.9f);
+                state.juliaconst.y += speed *sin(theta*0.1f);
+
+                state.juliaconst.x = std::clamp(state.juliaconst.x, -2.0f, 2.0f);
+                state.juliaconst.y = std::clamp(state.juliaconst.y, -2.0f, 2.0f);
         }
-        
+    }   
         window.clear(sf::Color::Black);
         window.draw(screen, &fractalShader);
         window.display();
