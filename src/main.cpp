@@ -16,7 +16,7 @@ int main()
     settings.antiAliasingLevel = 8;
 
     // Refer to config.hpp for changing window settings
-    sf::RenderWindow window(sf::VideoMode({cf::window_size.x, cf::window_size.y}), "Fractal", sf::Style::Default, sf::State::Windowed, settings);
+    sf::RenderWindow window(sf::VideoMode({cf::window_size.x, cf::window_size.y}), "FractalGen", sf::Style::Default, sf::State::Windowed, settings);
     window.setFramerateLimit(cf::max_framerate);
     window.setMouseCursorVisible(cf::cursor_visible);
     window.setKeyRepeatEnabled(cf::key_reapeat);
