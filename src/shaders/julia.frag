@@ -38,7 +38,7 @@ void main() {
         float smoothIter = float(iter) + 1.0 - log2(log2(abs(zLen2)));
         float t = smoothIter / float(u_maxIter);
 
-        // Deep, moody dark-blue palette
+        // Dark Blue Color Palette
         vec3 color1 = vec3(0.0, 0.0, 0.0);      // Very Dark Blue
         vec3 color2 = vec3(0.0, 0.05, 0.1);     // darker indigo midBlue
         vec3 color3 = vec3(0.25, 0.35, 1.0);    // Bright Blue
