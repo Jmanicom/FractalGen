@@ -26,7 +26,7 @@ void main() {
         float y = 2.0 * z.x * z.y + c.y;
         z = vec2(x, y);
         
-        zLen2 = z.x * z.x + z.y * z.y;
+        zLen2 = dot(z, z);
         if (zLen2 > 4.0) break;
     }
     
@@ -42,7 +42,7 @@ void main() {
         float t = sqrt(smoothIter / 50.0) + u_colorOffset * 0.1;
         t = mod(t, 1);
         
-        // Exact color palette from the reference image
+        // Vibrant Color Palette
         vec3 color1 = vec3(1.0, 0.8, 0.4);     // Light yellow-orange
         vec3 color2 = vec3(1.0, 0.5, 0.0);     // Bright orange
         vec3 color3 = vec3(0.5, 0.2, 0.6);     // Deep purple
@@ -50,7 +50,7 @@ void main() {
         vec3 color5 = vec3(0.3, 0.6, 0.9);     // Light blue
         vec3 color6 = vec3(0.7, 0.85, 0.95);   // Cyan-white
         
-        // Multi-stage gradient matching the image
+        // Multi-stage gradient
         vec3 color;
         float stage = t * 5.0;
         
@@ -70,7 +70,7 @@ void main() {
         float detail = sin(smoothIter * 0.3) * 0.08 + 1.0;
         color *= detail;
         
-        // Contrast boost to match the image
+        // Contrast boost
         color = pow(color, vec3(0.85));
         
         // Slight saturation boost
