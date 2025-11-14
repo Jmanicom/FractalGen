@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 
+<<<<<<< HEAD
 struct FractalState {
 
     // Window-related settings
@@ -22,6 +23,26 @@ struct FractalState {
     bool isDragging = false;
     bool cursorVisible = cf::cursor_visible;
     sf::Vector2i lastMousePos;
+=======
+struct Fractal 
+{
+    // Window-related Settings
+    sf::Vector2<cf::FloatType> center = cf::center_init;
+    cf::FloatType zoom = cf::zoom_init;
+    sf::Vector2i lastMousePos;
+
+    // Fractal Settings
+    sf::Vector2f julia_init = {-0.835f, -0.2321f};
+    sf::Vector2f julia_c = julia_init;
+
+    // Shader Settings
+    std::string shader_init = "shaders/mandelbrot.frag";
+    std::string active_shader = shader_init;
+    bool isPaused = true;
+    bool isDragging = false;
+    bool isVisible = cf::cursor_visible;
+    bool isFullscreen = cf::is_fullscreen;
+>>>>>>> test
 
     // List of all fractals
     std::array<std::string, 2> all_fractals = {
@@ -33,15 +54,25 @@ struct FractalState {
         center = cf::center_init;
         zoom = cf::zoom_init;
         if (active_shader == "shaders/julia.frag") {
+<<<<<<< HEAD
             C = cf::julia_c;
         }
     }
 
+=======
+            C = julia_init;
+        }
+    }
+>>>>>>> test
 };
 
 namespace ev                                                                                                                    // Create namespace for event handling
 {                                                                                       
+<<<<<<< HEAD
     void processEvents(sf::Window& window, FractalState& state, sf::Shader& fractalShader, float window_w, float window_h);     // Take in reference to window object from main.cpp
+=======
+    void processEvents(sf::RenderWindow& window, Fractal& fractal, sf::Shader& shader, float window_w, float window_h);     // Take in reference to window object from main.cpp
+>>>>>>> test
 
     //void setShader(std::string& shader)
 

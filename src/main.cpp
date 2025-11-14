@@ -5,12 +5,25 @@
 #include <iostream>
 #include <math.h>
 #include <algorithm>
+<<<<<<< HEAD
+=======
 
-// Define Settings
-static float window_w = cf::window_size_f.x;
-static float window_h = cf::window_size_f.y;
+int main() {
+>>>>>>> test
 
+    // Initialize Window Objetcs
+    sf::RenderWindow window;
+    sf::ContextSettings settings;
+    sf::Shader shader;
+    Fractal fractal;
+    sf::RectangleShape rect;
+    rect.setPosition({0.0, 0});
+    rect.setSize(cf::window_size_f);
 
+    // Run Window Config Commands (Refer to config.cpp)
+    createWindow(window, settings, cf::is_fullscreen);
+
+<<<<<<< HEAD
 int main()
 {
     // Enable 8x MSAA antialiasing
@@ -34,12 +47,16 @@ int main()
     sf::Shader fractalShader;   // Init fractalShader
 
     // Check if shaders are supported
+=======
+     // Check if shaders are supported
+>>>>>>> test
     if (!sf::Shader::isAvailable()) {
         std::cerr << "Shaders are unsupported on this system!" << std::endl;
         return -1;
     }
 
     // Load default fragment shader
+<<<<<<< HEAD
     if (!fractalShader.loadFromFile(state.shader_init, sf::Shader::Type::Fragment)) {
         std::cerr << "Failed to load shader!" << std::endl;
         return -1;
@@ -52,13 +69,46 @@ int main()
         ev::processEvents(window, state, fractalShader, window_w, window_h);
 
         // state.colorOffset += 0.00001f;  // Animate colors over time (Optional)
+=======
+    if (!shader.loadFromFile(fractal.shader_init, sf::Shader::Type::Fragment)) {
+        std::cerr << "Failed to load shader!" << std::endl;
+        return -1;
+    }
+    
+    float theta = 0;
+    while(window.isOpen()) {
 
+        // Calls processEvents in event_handler.cpp to handle input
+        ev::processEvents(window, fractal, shader, cf::window_size_f.x, cf::window_size_f.y);
+>>>>>>> test
 
+        // Set Shader Uniforms
+        shader.setUniform("u_resolution", cf::window_size_f);
+        shader.setUniform("u_center", fractal.center);
+        shader.setUniform("u_zoom", fractal.zoom);
+        shader.setUniform("u_maxIter", cf::max_iter);
+
+<<<<<<< HEAD
         // set uniforms before drawing
         fractalShader.setUniform("u_resolution", sf::Vector2f(window_w, window_h));
         fractalShader.setUniform("u_center", state.center);
         fractalShader.setUniform("u_zoom", state.zoom);
         fractalShader.setUniform("u_maxIter", cf::max_iter);
+=======
+        if (fractal.active_shader == "shaders/julia.frag") {
+            shader.setUniform("u_juliaC", fractal.julia_c);
+            if (!fractal.isPaused) {
+                theta += 0.01f;
+                float speed = 0.0002f;
+
+                fractal.julia_c.x += speed *cos(theta*0.9f);
+                fractal.julia_c.y += speed *sin(theta*0.1f);
+
+                fractal.julia_c.x = std::clamp(fractal.julia_c.x, -2.0f, 2.0f);
+                fractal.julia_c.y = std::clamp(fractal.julia_c.y, -2.0f, 2.0f);
+            }
+        }   
+>>>>>>> test
 
         if (state.active_shader == "shaders/julia.frag") {
             fractalShader.setUniform("u_juliaC", state.juliaconst);
@@ -74,11 +124,9 @@ int main()
         }
     }   
         window.clear(sf::Color::Black);
-        window.draw(screen, &fractalShader);
+        window.draw(rect, &shader);
         window.display();
-
     }
 
     return 0;
-
 }
