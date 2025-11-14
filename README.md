@@ -67,6 +67,8 @@ Then it can be run using `./FractalGen`. If all has been done properly, a window
 
 (Not all features are functional. Early working version)
 
+If you want to explore varois Julia Set shapes, go to this file: src/util/config.hpp and change the julia_c value to anything in the bounds of [-2.0f, 2.0f] for both the x and y value.
+
 ## References
 1. [SFML Documentation](https://www.sfml-dev.org/documentation/3.0.2/) for learning how to render the fractals
 2. [OpenGL Documentation](https://www.opengl.org/Documentation/Specs.html) for learning to write in GLSL shader language
