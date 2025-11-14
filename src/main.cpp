@@ -2,65 +2,66 @@
 #include <SFML/OpenGL.hpp>
 #include "util/event_handler.hpp"
 #include "util/config.hpp"
-
 #include <iostream>
-#include <complex>
 #include <math.h>
+#include <algorithm>
 
+int main() {
 
-// Define Settings
-static float window_w = cf::window_size_f.x;
-static float window_h = cf::window_size_f.y;
+    // Initialize Window Objetcs
+    sf::RenderWindow window;
+    sf::ContextSettings settings;
+    sf::Shader shader;
+    Fractal fractal;
+    sf::RectangleShape rect;
+    rect.setPosition({0.0, 0});
+    rect.setSize(cf::window_size_f);
 
+    // Run Window Config Commands (Refer to config.cpp)
+    createWindow(window, settings, cf::is_fullscreen);
 
-int main()
-{
-    // Refer to config.hpp for changing window settings
-    sf::RenderWindow window(sf::VideoMode({cf::window_size.x, cf::window_size.y}), "Fractal", sf::Style::Default);
-    window.setFramerateLimit(cf::max_framerate);
-    window.setMouseCursorVisible(cf::cursor_visible);
-    window.setKeyRepeatEnabled(cf::key_reapeat);
-
-    // after your existing initialization
-    sf::VertexArray screen(sf::PrimitiveType::TriangleStrip, 4);
-    screen[0].position = { 0.f, 0.f };
-    screen[1].position = { window_w, 0.f };
-    screen[2].position = { 0.f, window_h };
-    screen[3].position = { window_w, window_h };
-
-    sf::Shader fractalShader;
-
-    if (!fractalShader.loadFromFile("shaders/mandelbrot.frag", sf::Shader::Type::Fragment)) {
-        std::cerr << "Failed to load shader!" << std::endl;
+     // Check if shaders are supported
+    if (!sf::Shader::isAvailable()) {
+        std::cerr << "Shaders are unsupported on this system!" << std::endl;
         return -1;
     }
 
-    // Set initial fractal parameters
-    sf::Vector2f center( -0.5f, 0.0f );
-    float zoom = 1.5f;
-    int maxIter = cf::max_iter;
-    float colorOffset = 0.0f;
-
+    // Load default fragment shader
+    if (!shader.loadFromFile(fractal.shader_init, sf::Shader::Type::Fragment)) {
+        std::cerr << "Failed to load shader!" << std::endl;
+        return -1;
+    }
+    
+    float theta = 0;
     while(window.isOpen()) {
-        
-        // Calls processEvents in event_handler.hpp under namespace ev
-        ev::processEvents(window);
 
-        colorOffset += 1.5f; // Animate colors over time
+        // Calls processEvents in event_handler.cpp to handle input
+        ev::processEvents(window, fractal, shader, cf::window_size_f.x, cf::window_size_f.y);
 
+        // Set Shader Uniforms
+        shader.setUniform("u_resolution", cf::window_size_f);
+        shader.setUniform("u_center", fractal.center);
+        shader.setUniform("u_zoom", fractal.zoom);
+        shader.setUniform("u_maxIter", cf::max_iter);
 
-        // set uniforms before drawing
-        fractalShader.setUniform("u_resolution", sf::Vector2f(window_w, window_h));
-        fractalShader.setUniform("u_center", center);
-        fractalShader.setUniform("u_zoom", zoom);
-        fractalShader.setUniform("u_maxIter", maxIter);
+        if (fractal.active_shader == "shaders/julia.frag") {
+            shader.setUniform("u_juliaC", fractal.julia_c);
+            if (!fractal.isPaused) {
+                theta += 0.01f;
+                float speed = 0.0002f;
+
+                fractal.julia_c.x += speed *cos(theta*0.9f);
+                fractal.julia_c.y += speed *sin(theta*0.1f);
+
+                fractal.julia_c.x = std::clamp(fractal.julia_c.x, -2.0f, 2.0f);
+                fractal.julia_c.y = std::clamp(fractal.julia_c.y, -2.0f, 2.0f);
+            }
+        }   
 
         window.clear(sf::Color::Black);
-        window.draw(screen, &fractalShader);
+        window.draw(rect, &shader);
         window.display();
-
     }
 
     return 0;
-
 }
