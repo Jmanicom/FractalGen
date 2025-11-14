@@ -15,7 +15,7 @@ void createWindow(sf::RenderWindow& window, sf::ContextSettings& settings, bool 
     window.setKeyRepeatEnabled(cf::key_reapeat);
     window.requestFocus();
 
-    settings.depthBits = 32;
+    settings.depthBits = 24;
     settings.stencilBits = 8;
     settings.antiAliasingLevel = 8;
     settings.majorVersion = 4;
