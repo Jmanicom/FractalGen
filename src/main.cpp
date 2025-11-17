@@ -13,9 +13,6 @@ int main() {
     sf::ContextSettings settings;
     sf::Shader shader;
     Fractal fractal;
-    sf::RectangleShape rect;
-    rect.setPosition({0.0, 0});
-    rect.setSize(cf::window_size_f);
 
     // Run Window Config Commands (Refer to config.cpp)
     createWindow(window, settings, cf::is_fullscreen);
@@ -27,11 +24,28 @@ int main() {
     }
 
     // Load default fragment shader
-    if (!shader.loadFromFile(fractal.shader_init, sf::Shader::Type::Fragment)) {
+    if (!shader.loadFromFile("shaders/frag.glsl", sf::Shader::Type::Fragment)) {
         std::cerr << "Failed to load shader!" << std::endl;
         return -1;
     }
     
+    const unsigned int supersample = 2;
+    sf::RenderTexture renderTexture;
+
+    if (!renderTexture.resize({cf::window_size.x * supersample, cf::window_size.y * supersample})) {
+        std::cerr << "Failed to create render texture!" << std::endl;
+        return -1;
+    }
+    renderTexture.setSmooth(true);
+
+    sf::RectangleShape rect;
+    rect.setPosition({0.0f, 0.0f});
+    rect.setSize(sf::Vector2f(cf::window_size_f.x * supersample, cf::window_size_f.y * supersample));
+
+    sf::Sprite displaySprite(renderTexture.getTexture());
+
+    displaySprite.setScale(sf::Vector2f(1.0f / supersample, 1.0f / supersample));
+
     float theta = 0;
     while(window.isOpen()) {
 
@@ -39,40 +53,39 @@ int main() {
         ev::processEvents(window, fractal, shader, cf::window_size_f.x, cf::window_size_f.y);
 
         // Set Shader Uniforms
-        shader.setUniform("u_resolution", cf::window_size_f);
+        shader.setUniform("u_resolution", sf::Vector2f(cf::window_size_f.x * supersample, cf::window_size_f.y * supersample));
         shader.setUniform("u_center", fractal.center);
         shader.setUniform("u_zoom", fractal.zoom);
         shader.setUniform("u_maxIter", cf::max_iter);
+        shader.setUniform("u_fType", fractal.fType);
+        shader.setUniform("u_drawMandelbrot", fractal.drawMan);
+        shader.setUniform("u_drawJulia", fractal.drawJul);
 
-        if (fractal.active_shader == "shaders/julia.frag") {
-            shader.setUniform("u_juliaC", fractal.julia_c);
-            if (!fractal.isPaused) {
-                theta += 0.01f;
-                float speed = 0.0002f;
+        if (fractal.previewMode) {
+            shader.setUniform("u_mousePos", fractal.mouseJuliaC);
+        } else {
+            shader.setUniform("u_mousePos", fractal.julia_c);
+        }
 
-                fractal.julia_c.x += speed *cos(theta*0.9f);
-                fractal.julia_c.y += speed *sin(theta*0.1f);
+        if (fractal.drawJul && !fractal.drawMan && !fractal.isPaused) {
+            theta += 0.01f;
+            float speed = 0.0002f;
 
-                fractal.julia_c.x = std::clamp(fractal.julia_c.x, -2.0f, 2.0f);
-                fractal.julia_c.y = std::clamp(fractal.julia_c.y, -2.0f, 2.0f);
-            }
-        }   
+            fractal.julia_c.x += speed *cos(theta*0.9f);
+            fractal.julia_c.y += speed *sin(theta*0.1f);
 
-        if (fractal.active_shader == "shaders/julia.frag") {
-            shader.setUniform("u_juliaC", fractal.julia_c);
-            if (!fractal.isPaused) {
-                theta += 0.01f;
-                float speed = 0.0002f;
+            fractal.julia_c.x = std::clamp(fractal.julia_c.x, -2.0f, 2.0f);
+            fractal.julia_c.y = std::clamp(fractal.julia_c.y, -2.0f, 2.0f);
+        }
+        
+        renderTexture.clear(sf::Color::Black);
+        renderTexture.draw(rect, &shader);
+        renderTexture.display();
 
-                fractal.julia_c.x += speed *cos(theta*0.9f);
-                fractal.julia_c.y += speed *sin(theta*0.1f);
+        displaySprite.setTexture(renderTexture.getTexture(), true);
 
-                fractal.julia_c.x = std::clamp(fractal.julia_c.x, -2.0f, 2.0f);
-                fractal.julia_c.y = std::clamp(fractal.julia_c.y, -2.0f, 2.0f);
-            }
-        }   
         window.clear(sf::Color::Black);
-        window.draw(rect, &shader);
+        window.draw(displaySprite);
         window.display();
     }
 

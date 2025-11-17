@@ -13,7 +13,7 @@ using FloatType = float;
 const std::string window_name = "FractalGen";
 sf::Vector2u const window_size = {1920, 1080};
 sf::Vector2f const window_size_f = static_cast<sf::Vector2f>(window_size);
-sf::Vector2<FloatType> const center_init = {0.0, 0.0};
+sf::Vector2<FloatType> const center_init = {-0.5, 0.0};
 
 uint32_t const max_framerate = 144;
 int const max_iter = 1000;
@@ -22,7 +22,7 @@ bool const cursor_visible = false;
 bool const is_fullscreen = false;
 
 // Control Settings
-FloatType const zoom_init = static_cast<FloatType>(1.0);
+FloatType const zoom_init = static_cast<FloatType>(1.5);
 FloatType const zoom_speed = static_cast<FloatType>(1.1);
 FloatType const pan_speed = static_cast<FloatType>(0.1);
 }

@@ -13,29 +13,23 @@ struct Fractal
     sf::Vector2i lastMousePos;
 
     // Fractal Settings
-    sf::Vector2f julia_init = {-0.835f, -0.2321f};
-    sf::Vector2f julia_c = julia_init;
+    sf::Vector2f julia_c = {-0.7f, 0.27015f};
+    sf::Vector2f mouseJuliaC = {0.0f, 0.0f};
 
     // Shader Settings
-    std::string shader_init = "shaders/mandelbrot.frag";
-    std::string active_shader = shader_init;
     bool isPaused = true;
     bool isDragging = false;
     bool isVisible = cf::cursor_visible;
     bool isFullscreen = cf::is_fullscreen;
+    bool drawMan = true;
+    bool drawJul = false;
+    bool previewMode = false;
 
-    // List of all fractals
-    std::array<std::string, 2> all_fractals = {
-        "shaders/mandelbrot.frag",
-        "shaders/julia.frag"
-    };
+    int fType = 0;
 
-    void reset(sf::Vector2f& C) {
+    void reset() {
         center = cf::center_init;
         zoom = cf::zoom_init;
-        if (active_shader == "shaders/julia.frag") {
-            C = julia_init;
-        }
     }
 };
 
