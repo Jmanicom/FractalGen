@@ -29,12 +29,36 @@ VEC2 cx_sqr(VEC2 a) {
     return VEC2(x2 - y2, xy + xy);
 }
 
+VEC2 cx_cube(VEC2 a) {
+    FLOAT x2 = a.x * a.x;
+    FLOAT y2 = a.y * a.y;
+    FLOAT d = x2 - y2;
+    return VEC2(a.x * (d - y2 - y2), a.y * (x2 + x2 + d));
+}
+
+VEC2 cx_mul(VEC2 a, VEC2 b) {
+    return VEC2(a.x * b.x - a.y * b.y, a.x * b.y + a.y * b.x);
+}
+
+VEC2 cx_div(VEC2 a, VEC2 b) {
+    FLOAT denom = 1.0 / (b.x * b.x + b.y * b.y);
+    return VEC2(a.x * b.x + a.y * b.y, a.y * b.x - a.x * b.y) * denom;
+}
+
 vec2 mandelbrot(vec2 z, vec2 c) {
     return cx_sqr(z) + c;
 }
 
 vec2 burningShip(VEC2 z, VEC2 c) {
     return VEC2(z.x * z.x - z.y * z.y, 2.0 * abs(z.x * z.y)) + c;
+}
+
+vec2 feather(VEC2 z, VEC2 c) {
+    return cx_div(cx_cube(z), VEC2(1.0, 0.0) + z * z) + c;
+}
+
+vec2 tricorn(VEC2 z, VEC2 c) {
+    return VEC2(z.x * z.x - z.y * z.y, -2.0 * z.x * z.y) + c;
 }
 
 vec3 computeFractal(VEC2 zInit, VEC2 c) {
@@ -46,6 +70,8 @@ vec3 computeFractal(VEC2 zInit, VEC2 c) {
         switch (u_fType) {
             case 0: z = mandelbrot(z, c); break;
             case 1: z = burningShip(z, c); break;
+            case 2: z = feather(z, c); break;
+            case 3: z = tricorn(z, c); break;
         }
     
         zlen2 = dot(z, z);
