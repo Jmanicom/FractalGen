@@ -104,8 +104,14 @@ void processEvents(sf::RenderWindow& window, Fractal& fractal, sf::Shader& shade
                             fractal.drawMan = true;
                             fractal.reset();
                         }
+                }   if (keyPressed->scancode == sf::Keyboard::Scancode::C) {
+                        if (fractal.colType >= 1)
+                            fractal.colType = 0;
+                        else {
+                            fractal.colType += 1;
+                        }
                 }
-                    if (keyPressed->scancode >= sf::Keyboard::Scancode::Num1 && keyPressed->scancode <= sf::Keyboard::Scancode::Num2) {
+                    if (keyPressed->scancode >= sf::Keyboard::Scancode::Num1 && keyPressed->scancode <= sf::Keyboard::Scancode::Num4) {
                         int idx = static_cast<int>(keyPressed->scancode) - static_cast<int>(sf::Keyboard::Scancode::Num1);
                         fractal.fType = idx;             
                 }

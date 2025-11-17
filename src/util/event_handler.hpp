@@ -24,6 +24,7 @@ struct Fractal
     bool drawMan = true;
     bool drawJul = false;
     bool previewMode = false;
+    int colType = 0;
 
     int fType = 0;
 

@@ -29,6 +29,7 @@ int main() {
         return -1;
     }
     
+    // Supersampling to increase render quality
     const unsigned int supersample = 2;
     sf::RenderTexture renderTexture;
 
@@ -60,6 +61,7 @@ int main() {
         shader.setUniform("u_fType", fractal.fType);
         shader.setUniform("u_drawMandelbrot", fractal.drawMan);
         shader.setUniform("u_drawJulia", fractal.drawJul);
+        shader.setUniform("u_colType", fractal.colType);
 
         if (fractal.previewMode) {
             shader.setUniform("u_mousePos", fractal.mouseJuliaC);

@@ -14,6 +14,7 @@ uniform int u_maxIter;
 uniform vec2 u_mousePos;
 uniform bool u_drawMandelbrot;
 uniform bool u_drawJulia;
+uniform int u_colType;
 
 out vec4 FragColor;
 
@@ -83,21 +84,32 @@ vec3 computeFractal(VEC2 zInit, VEC2 c) {
     } else {
         float smoothIter = float(iter) + 1.0 - log2(log2(zlen2));
 
-        // Dynamic threshold to eliminate halo
-        float iterThreshold = mix(15.0, 5.0, clamp(u_zoom / 2.0, 0.0, 1.0));
-        if (smoothIter < iterThreshold) {
-            return vec3(0.05, 0.05, 0.15);
-        }
-
         float t = sqrt(smoothIter / 50.0);
         t = mod(t, 1.0);
 
-        vec3 color1 = vec3(1.0, 0.8, 0.4);     // Light yellow-orange
-        vec3 color2 = vec3(1.0, 0.5, 0.0);     // Bright orange
-        vec3 color3 = vec3(0.5, 0.2, 0.6);     // Deep purple
-        vec3 color4 = vec3(0.1, 0.3, 0.7);     // Deep blue
-        vec3 color5 = vec3(0.3, 0.6, 0.9);     // Light blue
-        vec3 color6 = vec3(0.7, 0.85, 0.95);   // Cyan-white
+        vec3 color1;
+        vec3 color2;
+        vec3 color3;
+        vec3 color4;
+        vec3 color5;
+        vec3 color6;
+
+        if (u_colType == 0) {
+            color1 = vec3(1.0, 0.8, 0.4);     // Light yellow-orange
+            color2 = vec3(1.0, 0.5, 0.0);     // Bright orange
+            color3 = vec3(0.5, 0.2, 0.6);     // Deep purple
+            color4 = vec3(0.1, 0.3, 0.7);     // Deep blue
+            color5 = vec3(0.3, 0.6, 0.9);     // Light blue
+            color6 = vec3(0.7, 0.85, 0.95);   // Cyan-white
+        }
+        else if (u_colType == 1) {
+            color1 = vec3(0.0, 0.0, 0.0);      // Very Dark Blue
+            color2 = vec3(0.0, 0.05, 0.1);     // darker indigo midBlue
+            color3 = vec3(0.25, 0.35, 1.0);    // Bright Blue
+            color4 = vec3(0.03, 0.5, 1.0);     // Electric Blue
+            color5 = vec3(0.9, 0.95, 1.0);     // outer glow white-blue whiteGlow
+            color6 = vec3(0.95, 1.0, 1.0);
+        }
 
         vec3 color;
         float stage = t * 5.0;
@@ -126,8 +138,18 @@ vec3 computeFractal(VEC2 zInit, VEC2 c) {
         color = mix(vec3(gray), color, 1.15);
         
         color = clamp(color, 0.0, 1.0);
-        
-        return color;
+
+        float zoomFactor = clamp(pow(u_zoom, 0.4) * 0.3, 0.0, 1.0);
+        float iterThreshold = mix(3.0, 2.0, zoomFactor);
+
+        float fadeWidth = mix(1.0, 2.5, zoomFactor);
+
+        VEC3 bg = VEC3(0.05, 0.05, 0.05);
+        float f = smoothstep(iterThreshold - fadeWidth, iterThreshold + fadeWidth, smoothIter);
+
+        VEC3 finalColor = mix(bg, color, f);
+
+        return finalColor;
     }
 }
 
