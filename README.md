@@ -59,15 +59,14 @@ Then it can be run using `./FractalGen`. If all has been done properly, a window
 * Scroll Wheel - Zoom in and out
 * R - Reset view
 * 1 - Mandelbrot Set
-* 2 - Julia Set
+* 2 - Burning Ship
+* J - Press once, hover mouse over a point and left click to render Julia Set. Press J again to return to 'Mandelbrot' like fractals.
 * Spacebar - Toggle animation (Only on Julia Set for now)
 * C - Toggle color (Not functional)
 * F11 - Toggle fullscreen (Not functional)
 * S - Save screenshot (Not functional)
 
 (Not all features are functional. Early working version)
-
-If you want to explore varois Julia Set shapes, go to this file: src/util/config.hpp and change the julia_c value to anything in the bounds of [-2.0f, 2.0f] for both the x and y value.
 
 ## References
 1. [SFML Documentation](https://www.sfml-dev.org/documentation/3.0.2/) for learning how to render the fractals
