@@ -86,7 +86,7 @@ namespace ev                                                                    
                         fractal.isDragging = false;
                     }
                 
-                    // To handle mouse panning
+                // To handle mouse panning
                 }   else if (const auto* mouseMove = event->getIf<sf::Event::MouseMoved>()) {
                         sf::Vector2i mousePixel = sf::Mouse::getPosition(window);
                         sf::Vector2f mouseNorm;
@@ -113,12 +113,13 @@ namespace ev                                                                    
                     if (keyPressed->scancode == sf::Keyboard::Scancode::Escape) {
                         window.close();
                         break;
-                // Reset view to default
+                // Pause fractal Animation (Julia for now)
                 }   if (keyPressed->scancode == sf::Keyboard::Scancode::Space) {
                         fractal.isPaused = !fractal.isPaused;
+                // Reset view to default
                 }   if (keyPressed->scancode == sf::Keyboard::Scancode::R) {
                         fractal.reset();
-                // Keyboard Panning
+                // Enter Julia Select Mode
                 }   if (keyPressed->scancode == sf::Keyboard::Scancode::J) {
                         if (!fractal.drawJul) {
                             fractal.drawJul = true;
@@ -134,14 +135,15 @@ namespace ev                                                                    
                             fractal.drawMan = true;
                             fractal.reset();
                         }
+                // Change Color Palette
                 }   if (keyPressed->scancode == sf::Keyboard::Scancode::C) {
                         if (fractal.colType >= 1)
                             fractal.colType = 0;
                         else {
                             fractal.colType += 1;
                         }
-                }
-                    if (keyPressed->scancode >= sf::Keyboard::Scancode::Num1 && keyPressed->scancode <= sf::Keyboard::Scancode::Num4) {
+                // Select Fractal to Render using Num Keys
+                }   if (keyPressed->scancode >= sf::Keyboard::Scancode::Num1 && keyPressed->scancode <= sf::Keyboard::Scancode::Num4) {
                         int idx = static_cast<int>(keyPressed->scancode) - static_cast<int>(sf::Keyboard::Scancode::Num1);
                         fractal.fType = idx;             
                 }
