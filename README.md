@@ -29,7 +29,7 @@ The rules are as followed:
 Complete this series of calculations and coloring for every value c in the complex plane and you have the Mandelbrot set fractal!
 
 ### Julia Set
-The Julia Set is derived from the same equation as the Mandelbrot Set. However, its rules are slightly different, and thus we get a different shape.
+The Julia Set is derived from the same equation as the Mandelbrot set. However, its rules are slightly different, and thus we get a different shape.
 
 $$ z_{n+1} = z^2_n + c$$
 
@@ -39,7 +39,7 @@ The rules are as followed:
   - If the iterations remain bounded, color the initial z value black
   - If the iterations diverge, color the initial z value a different color based on how fast it diverges.
 
-Like the Mandelbrot set, complete this series of steps for every initial z value in the complex plane and you get the Julia Set.
+Like the Mandelbrot set, complete this series of steps for every initial z value in the complex plane and you get the Julia set.
 
 ## Compatibility
 This project was built using C++ and SFML on a Windows-based computer. The code is compiled using the g++ compiler and I haven't tested it yet on Mac, however you're welcome to clone the repo and give it a try.
@@ -60,15 +60,27 @@ Then it can be run using `./FractalGen`. If all has been done properly, a window
 * R - Reset view
 * 1 - Mandelbrot Set
 * 2 - Burning Ship
-* 3 - Feather Fractal
+* 3 - Feather Fractal (Expensive preformance wise, working on optimizing)
 * 4 - 'Mandelbar' Fractal
-* J - Press once, hover mouse over a point and left click to render Julia Set. Press J again to return to 'Mandelbrot' like fractals.
-* Spacebar - Toggle animation (Only on Julia Set for now)
-* C - Toggle color (Switches between 2 Palettes. Working on support for custom Palettes)
+* J - Press once, hover mouse over a point and left click to render Julia set. Press J again to return to 'Mandelbrot' like fractals.
+* Spacebar - Toggle animation (Only on Julia set for now)
+* C - Toggle color (Switches between 2 palettes. Working on support for custom palettes)
 * F11 - Toggle fullscreen (Not functional)
 * S - Save screenshot (Not functional)
 
 (Not all features are functional. Early working version)
+
+## Demonstration of Rendering Julia Sets
+<p align="center">
+  <img src="Media/Demo.gif" alt="Demo of Selecting Julia Set" width="1000" height="600"/>
+</p>
+
+## Gallery
+<p align="center">
+  <img src="Media/Seahorse Valley.png" alt="Seahorse Valley of Mandelbrot set" width="1000" height="600"/>
+  <img src="Media/Tendrils.png" alt="Tendril like figures of the Mandelbrot set" width="1000" height="600"/>
+  <img src="Media/Romanesca Broccoli.png" alt="Romanesco Broccoli like Julia set" width="1000" height="600"/>
+</p>
 
 ## References
 1. [SFML Documentation](https://www.sfml-dev.org/documentation/3.0.2/) for learning how to render the fractals
