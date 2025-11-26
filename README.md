@@ -48,9 +48,9 @@ command to download SFML on the compiler path: `pacman -S mingw-w64-x86_64-sfml`
 
 Next, we need to compile the program in order to use it. In a terminal prompt, make sure you're in the 'src' project directory and run the following command:
 
-`g++ main.cpp util/event_handler.cpp -I util -I shaders -lsfml-graphics -lsfml-window -lsfml-system -lopengl32 -o FractalGen`
+`g++ main.cpp -I util -I shaders -lsfml-graphics -lsfml-window -lsfml-system -lopengl32 -o FractalGen`
 
-Then it can be run using `./FractalGen`. If all has been done properly, a window should appear along with the Mandelbrot Set rendering. I am currently working on compatibility of MacOS and making the software more accessible.
+Then it can be run using `./FractalGen`. If all has been done properly, a window should appear along with the Mandelbrot set rendering. I am currently working on compatibility of MacOS and making the software more accessible.
 
 ## Controls
 * Esc - Exit window
@@ -60,9 +60,11 @@ Then it can be run using `./FractalGen`. If all has been done properly, a window
 * R - Reset view
 * 1 - Mandelbrot Set
 * 2 - Burning Ship
+* 3 - Feather Fractal
+* 4 - 'Mandelbar' Fractal
 * J - Press once, hover mouse over a point and left click to render Julia Set. Press J again to return to 'Mandelbrot' like fractals.
 * Spacebar - Toggle animation (Only on Julia Set for now)
-* C - Toggle color (Not functional)
+* C - Toggle color (Switches between 2 Palettes. Working on support for custom Palettes)
 * F11 - Toggle fullscreen (Not functional)
 * S - Save screenshot (Not functional)
 
