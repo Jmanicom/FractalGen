@@ -6,6 +6,7 @@
 #define VEC2 vec2
 #define VEC3 vec3 
 
+// Define Shader Uniforms
 uniform int u_fType;
 uniform vec2 u_resolution;
 uniform vec2 u_center;
@@ -16,6 +17,7 @@ uniform bool u_drawMandelbrot;
 uniform bool u_drawJulia;
 uniform int u_colType;
 
+// Define Output Color Vector
 out vec4 FragColor;
 
 // Hash function for dithering
@@ -23,6 +25,7 @@ float hash(vec2 p) {
     return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
 }
 
+// Define mathematical functions for use with complex numbers
 VEC2 cx_sqr(VEC2 a) {
     FLOAT x2 = a.x * a.x;
     FLOAT y2 = a.y * a.y;
@@ -45,6 +48,8 @@ VEC2 cx_div(VEC2 a, VEC2 b) {
     FLOAT denom = 1.0 / (b.x * b.x + b.y * b.y);
     return VEC2(a.x * b.x + a.y * b.y, a.y * b.x - a.x * b.y) * denom;
 }
+
+// Define Fractal Equations
 
 vec2 mandelbrot(vec2 z, vec2 c) {
     return cx_sqr(z) + c;
@@ -76,7 +81,7 @@ vec3 computeFractal(VEC2 zInit, VEC2 c) {
         }
     
         zlen2 = dot(z, z);
-        if (zlen2 > 4.0) break;
+        if (zlen2 > 100.0) break; // Larger escape radius provides more depth for feather fractal
     }
 
     if (iter == u_maxIter) {
@@ -103,12 +108,12 @@ vec3 computeFractal(VEC2 zInit, VEC2 c) {
             color6 = vec3(0.7, 0.85, 0.95);   // Cyan-white
         }
         else if (u_colType == 1) {
-            color1 = vec3(0.0, 0.0, 0.0);      // Very Dark Blue
-            color2 = vec3(0.0, 0.05, 0.1);     // darker indigo midBlue
-            color3 = vec3(0.25, 0.35, 1.0);    // Bright Blue
-            color4 = vec3(0.03, 0.5, 1.0);     // Electric Blue
-            color5 = vec3(0.9, 0.95, 1.0);     // outer glow white-blue whiteGlow
-            color6 = vec3(0.95, 1.0, 1.0);
+            color1 = vec3(0.02, 0.08, 0.20);    // Dark rich blue
+            color2 = vec3(0.05, 0.15, 0.40);    // Deep navy blue
+            color3 = vec3(0.10, 0.25, 0.60);    // Strong blue
+            color4 = vec3(0.20, 0.45, 0.80);    // Bright blue
+            color5 = vec3(0.40, 0.65, 0.95);    // Light electric blue
+            color6 = vec3(0.65, 0.80, 1.0);     // Bright cyan-blue glow
         }
 
         vec3 color;
