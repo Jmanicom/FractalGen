@@ -81,7 +81,7 @@ vec3 computeFractal(VEC2 zInit, VEC2 c) {
         }
     
         zlen2 = dot(z, z);
-        if (zlen2 > 100.0) break; // Larger escape radius provides more depth for feather fractal
+        if (zlen2 > 1000.0) break; // Larger escape radius provides more depth for feather fractal
     }
 
     if (iter == u_maxIter) {
