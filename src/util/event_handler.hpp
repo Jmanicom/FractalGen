@@ -15,12 +15,14 @@ struct Fractal
     // Fractal Settings
     sf::Vector2f julia_c = {-0.7f, 0.27015f};
     sf::Vector2f mouseJuliaC = {0.0f, 0.0f};
+    sf::Vector2f julisStartC;
 
     // Shader Settings
     bool isPaused = true;
     bool isDragging = false;
     bool isVisible = cf::cursor_visible;
     bool isFullscreen = cf::is_fullscreen;
+    bool toggleFullscreen = false;
     bool drawMan = true;
     bool drawJul = false;
     bool previewMode = false;
@@ -34,15 +36,16 @@ struct Fractal
     }
 };
 
-namespace ev                                                                                                                    // Create namespace for event handling
+namespace ev
 {                                                                                       
-    inline void processEvents(sf::RenderWindow& window, Fractal& fractal, sf::Shader& shader, float window_w, float window_h)      // Take in reference to window object from main.cpp
+    inline void processEvents(sf::RenderWindow& window, sf::RenderTexture& renderTexture, sf::ContextSettings& settings, Fractal& fractal, sf::Shader& shader, float window_w, float window_h)
     {
         while (const std::optional event = window.pollEvent()) {
             float panAmount = cf::pan_speed * fractal.zoom;
                 if (event->is<sf::Event::Closed>()) {
                     window.close();
                     break;
+
                 // Mouse Wheel Scroll to Zoom
                 }   else if (const auto* mouseIn = event->getIf<sf::Event::MouseWheelScrolled>()) {
                     sf::Vector2i mousePixel = sf::Mouse::getPosition(window);
@@ -59,7 +62,7 @@ namespace ev                                                                    
 
                     sf::Vector2f mouseAfterZoom = fractal.center + mouseNorm * fractal.zoom;
                     fractal.center += mouseBeforeZoom - mouseAfterZoom;
-                
+
                 // Left Click to pan
                 }   else if (const auto* mouseClick = event->getIf<sf::Event::MouseButtonPressed>()) {
                     if (mouseClick->button == sf::Mouse::Button::Left) {
@@ -68,12 +71,14 @@ namespace ev                                                                    
                             fractal.drawJul = true;
                             fractal.previewMode = false;
                             fractal.julia_c = fractal.mouseJuliaC;
+                            fractal.julisStartC = fractal.julia_c;
                             fractal.center = sf::Vector2f(0.0f, 0.0f);
                             fractal.zoom = 1.5f;
                         } else {
                         fractal.isDragging = true;
                         fractal.lastMousePos = sf::Mouse::getPosition(window);
                         }
+
                 // Middle click to change mouse visibility
                 }   if (mouseClick->button == sf::Mouse::Button::Middle) {
                         fractal.isVisible = !fractal.isVisible;
@@ -107,18 +112,35 @@ namespace ev                                                                    
                             fractal.lastMousePos = currentMousePos;
                         }
                 
-                // To handle keyboard input 
+                // To handle window resizing
+                }   else if (const auto* resized = event->getIf<sf::Event::Resized>()) {
+                        unsigned int width = resized->size.x;
+                        unsigned int height = resized->size.y;
+                        if (width < cf::minWindow_size.x || height < cf::minWindow_size.y) {
+                            width = std::max(width, cf::minWindow_size.x);
+                            height = std::max(height, cf::minWindow_size.y);
+                            window.setSize({width, height});
+                        }
+
+                        cf::window_size_f.x = static_cast<float>(width);
+                        cf::window_size_f.y = static_cast<float>(height);
+
+                        resizeWindow(window, renderTexture, settings, width, height);
+                // To handle keyboard input
                 }   else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {
                 // Escape to close window
                     if (keyPressed->scancode == sf::Keyboard::Scancode::Escape) {
                         window.close();
                         break;
+
                 // Pause fractal Animation (Julia for now)
                 }   if (keyPressed->scancode == sf::Keyboard::Scancode::Space) {
                         fractal.isPaused = !fractal.isPaused;
+
                 // Reset view to default
                 }   if (keyPressed->scancode == sf::Keyboard::Scancode::R) {
                         fractal.reset();
+
                 // Enter Julia Select Mode
                 }   if (keyPressed->scancode == sf::Keyboard::Scancode::J) {
                         if (!fractal.drawJul) {
@@ -128,6 +150,7 @@ namespace ev                                                                    
                             fractal.drawMan = false;
                             fractal.previewMode = false;
                             fractal.julia_c = fractal.mouseJuliaC;
+                            fractal.julisStartC = fractal.julia_c;
                             fractal.center = sf::Vector2f(0.0f, 0.0f);
                             fractal.zoom = 1.5f;
                         } else {
@@ -135,13 +158,18 @@ namespace ev                                                                    
                             fractal.drawMan = true;
                             fractal.reset();
                         }
+
+                // Toggle Fullscreen        
+                }   if (keyPressed->scancode == sf::Keyboard::Scancode::F11) {
+                        fractal.toggleFullscreen = !fractal.toggleFullscreen;
+
                 // Change Color Palette
                 }   if (keyPressed->scancode == sf::Keyboard::Scancode::C) {
                         if (fractal.colType >= 1)
                             fractal.colType = 0;
-                        else {
+                        else
                             fractal.colType += 1;
-                        }
+                
                 // Select Fractal to Render using Num Keys
                 }   if (keyPressed->scancode >= sf::Keyboard::Scancode::Num1 && keyPressed->scancode <= sf::Keyboard::Scancode::Num4) {
                         int idx = static_cast<int>(keyPressed->scancode) - static_cast<int>(sf::Keyboard::Scancode::Num1);

@@ -63,9 +63,9 @@ Then it can be run using `./FractalGen`. If all has been done properly, a window
 * 3 - Feather Fractal (Expensive preformance wise, working on optimizing)
 * 4 - 'Mandelbar' Fractal
 * J - Press once, hover mouse over a point and left click to render Julia set. Press J again to return to 'Mandelbrot' like fractals.
-* Spacebar - Toggle animation (Only on Julia set for now)
+* Spacebar - Toggle julia set animation
 * C - Toggle color (Switches between 2 palettes. Working on support for custom palettes)
-* F11 - Toggle fullscreen (Not functional)
+* F11 - Toggle fullscreen
 * S - Save screenshot (Not functional)
 
 (Not all features are functional. Early working version)

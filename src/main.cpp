@@ -21,22 +21,22 @@ int main() {
     Fractal fractal;
 
     // Run Window Config Commands (Refer to config.hpp)
-    createWindow(window, settings, cf::is_fullscreen);
+    createWindow(window, renderTexture, rect, settings, cf::is_fullscreen);
 
-     // Check if shaders are supported
+     // Check if shaders are supported - Throw error if they aren't
     if (!sf::Shader::isAvailable()) {
         std::cerr << "Shaders aren't unsupported on this system!" << std::endl;
         return -1;
     }
 
-    // Load default fragment shader
+    // Load default fragment shader - Throw error if can't fetch file
     if (!shader.loadFromFile("shaders/frag.glsl", sf::Shader::Type::Fragment)) {
         std::cerr << "Failed to load shader!" << std::endl;
         return -1;
     }
 
     // Run Render Object Config Commands + Create display sprite
-    createTextures(renderTexture, rect, cf::supersample);
+    createTextures(renderTexture, rect, cf::window_size.x, cf::window_size.y);
     sf::Sprite displaySprite(renderTexture.getTexture());
     displaySprite.setScale(sf::Vector2f(1.0f / cf::supersample, 1.0f / cf::supersample));
 
@@ -44,7 +44,7 @@ int main() {
     while(window.isOpen()) {
 
         // Calls processEvents in event_handler.cpp to handle input
-        ev::processEvents(window, fractal, shader, cf::window_size_f.x, cf::window_size_f.y);
+        ev::processEvents(window, renderTexture, settings, fractal, shader, cf::window_size_f.x, cf::window_size_f.y);
 
         // Set Shader Uniforms
         shader.setUniform("u_resolution", sf::Vector2f(cf::window_size_f.x * cf::supersample, cf::window_size_f.y * cf::supersample));
@@ -64,11 +64,12 @@ int main() {
 
         // Animation for Julia Spirals
         if (fractal.drawJul && !fractal.drawMan && !fractal.isPaused) {
-            theta += 0.01f;
-            float speed = 0.0002f;
+            theta += 0.001;
+            if (theta > 6.28318f) theta -= 6.28318f; // Return to 0 after 2pi
+            float scale = 0.15f;
 
-            fractal.julia_c.x += speed * cos(theta * 0.9f);
-            fractal.julia_c.y += speed * sin(theta * 0.1f);
+            fractal.julia_c.x = fractal.julisStartC.x + scale * sin(3.0f * theta);
+            fractal.julia_c.y = fractal.julisStartC.y + scale * sin(2.0f * theta);
 
             fractal.julia_c.x = std::clamp(fractal.julia_c.x, -2.0f, 2.0f);
             fractal.julia_c.y = std::clamp(fractal.julia_c.y, -2.0f, 2.0f);
@@ -84,6 +85,13 @@ int main() {
         window.clear(sf::Color::Black);
         window.draw(displaySprite);
         window.display();
+
+        if (fractal.toggleFullscreen) {
+            fractal.toggleFullscreen = false;
+            fractal.isFullscreen = !fractal.isFullscreen;
+            createWindow(window, renderTexture, rect, settings, fractal.isFullscreen);
+
+        }
     }
 
     return 0;
