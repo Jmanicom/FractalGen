@@ -1,3 +1,6 @@
+#ifdef SFML_STATIC
+#endif
+
 #include <SFML/Graphics.hpp>
 #include <SFML/OpenGL.hpp>
 #include "util/event_handler.hpp"
