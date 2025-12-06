@@ -8,11 +8,11 @@
 
 // Define Shader Uniforms
 uniform int u_fType;
-uniform vec2 u_resolution;
-uniform vec2 u_center;
+uniform VEC2 u_resolution;
+uniform VEC2 u_center;
 uniform float u_zoom;
 uniform int u_maxIter;
-uniform vec2 u_mousePos;
+uniform VEC2 u_mousePos;
 uniform bool u_drawMandelbrot;
 uniform bool u_drawJulia;
 uniform int u_colType;
@@ -21,8 +21,8 @@ uniform int u_colType;
 out vec4 FragColor;
 
 // Hash function for dithering
-float hash(vec2 p) {
-    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+float hash(VEC2 p) {
+    return fract(sin(dot(p, VEC2(127.1, 311.7))) * 43758.5453);
 }
 
 // Define mathematical functions for use with complex numbers
@@ -51,35 +51,50 @@ VEC2 cx_div(VEC2 a, VEC2 b) {
 
 // Define Fractal Equations
 
-vec2 mandelbrot(vec2 z, vec2 c) {
+VEC2 mandelbrot(VEC2 z, VEC2 c) {
     return cx_sqr(z) + c;
 }
 
-vec2 burningShip(VEC2 z, VEC2 c) {
+VEC2 burningShip(VEC2 z, VEC2 c) {
     return VEC2(z.x * z.x - z.y * z.y, -2.0 * abs(z.x * z.y)) + c;
 }
 
-vec2 feather(VEC2 z, VEC2 c) {
+VEC2 feather(VEC2 z, VEC2 c) {
     return cx_div(cx_cube(z), VEC2(1.0, 0.0) + z * z) + c;
 }
 
-vec2 tricorn(VEC2 z, VEC2 c) {
+VEC2 tricorn(VEC2 z, VEC2 c) {
     return VEC2(z.x * z.x - z.y * z.y, -2.0 * z.x * z.y) + c;
+}
+
+VEC2 wavy(VEC2 z, VEC2 c) {
+    VEC2 z2 = cx_sqr(z);
+    return VEC2(z2.x + sin(z.x), z2.y + sin(z2.y)) + c;
+}
+
+VEC2 phoenix(VEC2 z, VEC2 c, VEC2 zpre) {
+    VEC2 p = VEC2(-0.5, -0.5);
+    return cx_sqr(z) + c + p * zpre;
 }
 
 vec3 computeFractal(VEC2 zInit, VEC2 c) {
     VEC2 z = zInit;
+    VEC2 zpre = VEC2(0.0);
     int iter;
     float zlen2 = 0.0;
 
     for (iter = 0; iter < u_maxIter; iter++) {
+        VEC2 ztmp = z;
         switch (u_fType) {
             case 0: z = mandelbrot(z, c); break;
             case 1: z = burningShip(z, c); break;
             case 2: z = feather(z, c); break;
             case 3: z = tricorn(z, c); break;
+            case 4: z = wavy(z, c); break;
+            case 5: z = phoenix(z, c, zpre); break;
         }
-    
+        zpre = ztmp;
+
         zlen2 = dot(z, z);
         if (zlen2 > 1000.0) break; // Larger escape radius provides more depth for feather fractal
     }
@@ -160,15 +175,15 @@ vec3 computeFractal(VEC2 zInit, VEC2 c) {
 
 void main() {
     // Convert pixel coordinates to complex plane
-    vec2 uv = (gl_FragCoord.xy / u_resolution) * 2.0 - 1.0;
+    VEC2 uv = (gl_FragCoord.xy / u_resolution) * 2.0 - 1.0;
     uv.x *= u_resolution.x / u_resolution.y;
     
-    vec2 px = u_center + uv * u_zoom;
+    VEC2 px = u_center + uv * u_zoom;
 
     VEC3 col = VEC3(0.0);
 
     if (u_drawMandelbrot) {
-        vec3 mandelbrotColor = computeFractal(vec2(0.0), px);
+        vec3 mandelbrotColor = computeFractal(VEC2(0.0), px);
         col += mandelbrotColor;
     }
     if (u_drawJulia) {
