@@ -66,9 +66,7 @@ Then it can be run using `./FractalGen`. If all has been done properly, a window
 * Spacebar - Toggle julia set animation
 * C - Toggle color (Switches between 2 palettes. Working on support for custom palettes)
 * F11 - Toggle fullscreen
-* S - Save screenshot (Not functional)
-
-(Not all features are functional. Early working version)
+* S - Save screenshot
 
 ## Demonstration of Rendering Julia Sets
 <p align="center">

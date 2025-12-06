@@ -5,37 +5,6 @@
 #include <iostream>
 #include <math.h>
 
-struct Fractal 
-{
-    // Window-related Settings
-    sf::Vector2<cf::FloatType> center = cf::center_init;
-    cf::FloatType zoom = cf::zoom_init;
-    sf::Vector2i lastMousePos;
-
-    // Fractal Settings
-    sf::Vector2f julia_c = {-0.7f, 0.27015f};
-    sf::Vector2f mouseJuliaC = {0.0f, 0.0f};
-    sf::Vector2f julisStartC;
-
-    // Shader Settings
-    bool isPaused = true;
-    bool isDragging = false;
-    bool isVisible = cf::cursor_visible;
-    bool isFullscreen = cf::is_fullscreen;
-    bool toggleFullscreen = false;
-    bool drawMan = true;
-    bool drawJul = false;
-    bool previewMode = false;
-    int colType = 0;
-
-    int fType = 0;
-
-    void reset() {
-        center = cf::center_init;
-        zoom = cf::zoom_init;
-    }
-};
-
 namespace ev
 {                                                                                       
     inline void processEvents(sf::RenderWindow& window, sf::RenderTexture& renderTexture, sf::ContextSettings& settings, Fractal& fractal, sf::Shader& shader, float window_w, float window_h)
@@ -162,6 +131,10 @@ namespace ev
                 // Toggle Fullscreen        
                 }   if (keyPressed->scancode == sf::Keyboard::Scancode::F11) {
                         fractal.toggleFullscreen = !fractal.toggleFullscreen;
+                
+                // Toggle Screenshot
+                }   if (keyPressed->scancode == sf::Keyboard::Scancode::S) {
+                        fractal.takeScreenshot = !fractal.takeScreenshot;
 
                 // Change Color Palette
                 }   if (keyPressed->scancode == sf::Keyboard::Scancode::C) {
@@ -171,11 +144,24 @@ namespace ev
                             fractal.colType += 1;
                 
                 // Select Fractal to Render using Num Keys
-                }   if (keyPressed->scancode >= sf::Keyboard::Scancode::Num1 && keyPressed->scancode <= sf::Keyboard::Scancode::Num4) {
+                }   if (keyPressed->scancode >= sf::Keyboard::Scancode::Num1 && keyPressed->scancode <= sf::Keyboard::Scancode::Num6) {
                         int idx = static_cast<int>(keyPressed->scancode) - static_cast<int>(sf::Keyboard::Scancode::Num1);
                         fractal.fType = idx;             
                 }
             }
+        }
+    }
+
+    inline void updateStates(sf::RenderWindow& window, sf::RenderTexture& renderTexture, sf::RectangleShape& rect, sf::ContextSettings& settings, Fractal& fractal)
+    {
+        if (fractal.takeScreenshot) {
+            takeScreenshot(window, renderTexture, fractal);
+        }
+
+        if (fractal.toggleFullscreen) {
+            fractal.toggleFullscreen = false;
+            fractal.isFullscreen = !fractal.isFullscreen;
+            createWindow(window, renderTexture, rect, settings, fractal.isFullscreen); 
         }
     }
 }

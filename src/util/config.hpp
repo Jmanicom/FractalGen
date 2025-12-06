@@ -31,6 +31,38 @@ const FloatType zoom_speed = static_cast<FloatType>(1.1);
 const FloatType pan_speed = static_cast<FloatType>(0.1);
 }
 
+struct Fractal 
+{
+    // Window-related Settings
+    sf::Vector2<cf::FloatType> center = cf::center_init;
+    cf::FloatType zoom = cf::zoom_init;
+    sf::Vector2i lastMousePos;
+
+    // Fractal Settings
+    sf::Vector2f julia_c = {-0.7f, 0.27015f};
+    sf::Vector2f mouseJuliaC = {0.0f, 0.0f};
+    sf::Vector2f julisStartC;
+
+    // Shader Settings
+    bool isPaused = true;
+    bool isDragging = false;
+    bool isVisible = cf::cursor_visible;
+    bool isFullscreen = cf::is_fullscreen;
+    bool toggleFullscreen = false;
+    bool takeScreenshot = false;
+    bool drawMan = true;
+    bool drawJul = false;
+    bool previewMode = false;
+    int colType = 0;
+
+    int fType = 0;
+
+    void reset() {
+        center = cf::center_init;
+        zoom = cf::zoom_init;
+    }
+};
+
 inline void resizeWindow(sf::RenderWindow& window, sf::RenderTexture& renderTexture, sf::ContextSettings& settings, unsigned int w, unsigned int h)
 {
     cf::window_size.x = w;
@@ -52,6 +84,22 @@ inline void createTextures(sf::RenderTexture& renderTexture, sf::RectangleShape&
     // Configure the rect shape to draw to
     rect.setPosition({0.0f, 0.0f});
     rect.setSize(sf::Vector2f(w * cf::supersample, h * cf::supersample));
+}
+
+inline void takeScreenshot(sf::RenderWindow& window, sf::RenderTexture& renderTexture, Fractal& fractal)
+{
+    window.display();
+    const time_t t = std::time(0);
+    const tm* now = std::localtime(&t);
+    char buffer[128];
+    sf::Image image = renderTexture.getTexture().copyToImage();;
+
+    std::strftime(buffer, sizeof(buffer), "pic_%m-%d-%y_%H-%M-%S.png", now);
+    const sf::Vector2u windowSize = window.getSize();
+    if(!image.saveToFile(buffer)) {
+        std::cerr << "Failed to take screenshot" << std::endl;
+    }
+    fractal.takeScreenshot = false;
 }
 
 inline void createWindow(sf::RenderWindow& window, sf::RenderTexture& renderTexture, sf::RectangleShape& rect, sf::ContextSettings& settings, bool is_fullscreen) 

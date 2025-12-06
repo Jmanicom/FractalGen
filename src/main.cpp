@@ -89,12 +89,8 @@ int main() {
         window.draw(displaySprite);
         window.display();
 
-        if (fractal.toggleFullscreen) {
-            fractal.toggleFullscreen = false;
-            fractal.isFullscreen = !fractal.isFullscreen;
-            createWindow(window, renderTexture, rect, settings, fractal.isFullscreen);
-
-        }
+        // Checks for screenshot/fullscreen bools and executes function if needed
+        ev::updateStates(window, renderTexture, rect, settings, fractal);
     }
 
     return 0;
