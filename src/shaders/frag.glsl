@@ -10,7 +10,7 @@
 uniform int u_fType;
 uniform VEC2 u_resolution;
 uniform VEC2 u_center;
-uniform float u_zoom;
+uniform FLOAT u_zoom;
 uniform int u_maxIter;
 uniform VEC2 u_mousePos;
 uniform bool u_drawMandelbrot;
@@ -21,7 +21,7 @@ uniform int u_colType;
 out vec4 FragColor;
 
 // Hash function for dithering
-float hash(VEC2 p) {
+FLOAT hash(VEC2 p) {
     return fract(sin(dot(p, VEC2(127.1, 311.7))) * 43758.5453);
 }
 
@@ -73,7 +73,7 @@ VEC2 wavy(VEC2 z, VEC2 c) {
 }
 
 VEC2 phoenix(VEC2 z, VEC2 c, VEC2 zpre) {
-    VEC2 p = VEC2(-0.5, -0.5);
+    FLOAT p = -0.5;
     return cx_sqr(z) + c + p * zpre;
 }
 
@@ -81,7 +81,7 @@ vec3 computeFractal(VEC2 zInit, VEC2 c) {
     VEC2 z = zInit;
     VEC2 zpre = VEC2(0.0);
     int iter;
-    float zlen2 = 0.0;
+    FLOAT zlen2 = 0.0;
 
     for (iter = 0; iter < u_maxIter; iter++) {
         VEC2 ztmp = z;
@@ -102,9 +102,9 @@ vec3 computeFractal(VEC2 zInit, VEC2 c) {
     if (iter == u_maxIter) {
         return vec3(0.0, 0.0, 0.0);
     } else {
-        float smoothIter = float(iter) + 1.0 - log2(log2(zlen2));
+        FLOAT smoothIter = FLOAT(iter) + 1.0 - log2(log2(zlen2));
 
-        float t = sqrt(smoothIter / 50.0);
+        FLOAT t = sqrt(smoothIter / 50.0);
         t = mod(t, 1.0);
 
         vec3 color1;
@@ -132,7 +132,7 @@ vec3 computeFractal(VEC2 zInit, VEC2 c) {
         }
 
         vec3 color;
-        float stage = t * 5.0;
+        FLOAT stage = t * 5.0;
 
         if (stage < 1.0) {
             color = mix(color1, color2, smoothstep(0.0, 1.0, stage));
@@ -147,25 +147,25 @@ vec3 computeFractal(VEC2 zInit, VEC2 c) {
         }
 
         // Subtle brightness variation for texture
-        float detail = sin(smoothIter * 0.3) * 0.08 + 1.0;
+        FLOAT detail = sin(smoothIter * 0.3) * 0.08 + 1.0;
         color *= detail;
         
         // Contrast boost
         color = pow(color, vec3(0.85));
         
         // Slight saturation boost
-        float gray = dot(color, vec3(0.299, 0.587, 0.114));
+        FLOAT gray = dot(color, vec3(0.299, 0.587, 0.114));
         color = mix(vec3(gray), color, 1.15);
         
         color = clamp(color, 0.0, 1.0);
 
-        float zoomFactor = clamp(pow(u_zoom, 0.4) * 0.3, 0.0, 1.0);
-        float iterThreshold = mix(3.0, 2.0, zoomFactor);
+        FLOAT zoomFactor = clamp(pow(u_zoom, 0.4) * 0.3, 0.0, 1.0);
+        FLOAT iterThreshold = mix(3.0, 2.0, zoomFactor);
 
-        float fadeWidth = mix(1.0, 2.5, zoomFactor);
+        FLOAT fadeWidth = mix(1.0, 2.5, zoomFactor);
 
         VEC3 bg = VEC3(0.05, 0.05, 0.05);
-        float f = smoothstep(iterThreshold - fadeWidth, iterThreshold + fadeWidth, smoothIter);
+        FLOAT f = smoothstep(iterThreshold - fadeWidth, iterThreshold + fadeWidth, smoothIter);
 
         VEC3 finalColor = mix(bg, color, f);
 
@@ -195,7 +195,7 @@ void main() {
     }
 
     // Add dithering
-    float dither = (hash(gl_FragCoord.xy) - 0.5) / 255.0;
+    FLOAT dither = (hash(gl_FragCoord.xy) - 0.5) / 255.0;
     col += vec3(dither);
     col = clamp(col, 0.0, 1.0);
 
