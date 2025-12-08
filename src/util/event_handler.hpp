@@ -129,7 +129,7 @@ namespace ev
                         }
 
                 // Toggle Fullscreen        
-                }   if (keyPressed->scancode == sf::Keyboard::Scancode::F11) {
+                }   if (keyPressed->scancode == sf::Keyboard::Scancode::F) {
                         fractal.toggleFullscreen = !fractal.toggleFullscreen;
                 
                 // Toggle Screenshot
