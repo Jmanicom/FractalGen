@@ -15,7 +15,6 @@ uniform int u_maxIter;
 uniform VEC2 u_mousePos;
 uniform bool u_drawMandelbrot;
 uniform bool u_drawJulia;
-uniform int u_colType;
 
 // Define Output Color Vector
 out vec4 FragColor;
@@ -82,8 +81,8 @@ VEC2 phoenix(VEC2 z, VEC2 c, VEC2 zpre) {
 vec3 computeFractal(VEC2 zInit, VEC2 c) {
     VEC2 z = zInit;
     VEC2 zpre = VEC2(0.0);
-    int iter;
     FLOAT zlen2 = 0.0;
+    int iter;
 
     // Rotate orientation for phoenix fractal
     if (u_fType == 5) {
@@ -113,32 +112,16 @@ vec3 computeFractal(VEC2 zInit, VEC2 c) {
         FLOAT smoothIter = FLOAT(iter) + 1.0 - log2(log2(zlen2));
 
         FLOAT t = sqrt(smoothIter / 50.0);
-        t = mod(t, 1.0);
+        t = mod(t, 1.1);
+ 
+        vec3 color1 = vec3(1.0, 0.8, 0.4);     // Light yellow-orange
+        vec3 color2 = vec3(1.0, 0.5, 0.0);     // Bright orange
+        vec3 color3 = vec3(0.5, 0.2, 0.6);     // Deep purple
+        vec3 color4 = vec3(0.1, 0.3, 0.7);     // Deep blue
+        vec3 color5 = vec3(0.3, 0.6, 0.9);     // Light blue
+        vec3 color6 = vec3(0.7, 0.85, 0.95);   // Cyan-white
 
-        vec3 color1;
-        vec3 color2;
-        vec3 color3;
-        vec3 color4;
-        vec3 color5;
-        vec3 color6;
-
-        if (u_colType == 0) {
-            color1 = vec3(1.0, 0.8, 0.4);     // Light yellow-orange
-            color2 = vec3(1.0, 0.5, 0.0);     // Bright orange
-            color3 = vec3(0.5, 0.2, 0.6);     // Deep purple
-            color4 = vec3(0.1, 0.3, 0.7);     // Deep blue
-            color5 = vec3(0.3, 0.6, 0.9);     // Light blue
-            color6 = vec3(0.7, 0.85, 0.95);   // Cyan-white
-        }
-        else if (u_colType == 1) {
-            color1 = vec3(0.02, 0.08, 0.20);    // Dark rich blue
-            color2 = vec3(0.05, 0.15, 0.40);    // Deep navy blue
-            color3 = vec3(0.10, 0.25, 0.60);    // Strong blue
-            color4 = vec3(0.20, 0.45, 0.80);    // Bright blue
-            color5 = vec3(0.40, 0.65, 0.95);    // Light electric blue
-            color6 = vec3(0.65, 0.80, 1.0);     // Bright cyan-blue glow
-        }
-
+    
         vec3 color;
         FLOAT stage = t * 5.0;
 

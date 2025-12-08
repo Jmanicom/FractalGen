@@ -137,13 +137,6 @@ namespace ev
                 // Toggle Screenshot
                 }   if (keyPressed->scancode == sf::Keyboard::Scancode::S) {
                         fractal.takeScreenshot = !fractal.takeScreenshot;
-
-                // Change Color Palette
-                }   if (keyPressed->scancode == sf::Keyboard::Scancode::C) {
-                        if (fractal.colType >= 1)
-                            fractal.colType = 0;
-                        else
-                            fractal.colType += 1;
                 
                 // Select Fractal to Render using Num Keys
                 }   if (keyPressed->scancode >= sf::Keyboard::Scancode::Num1 && keyPressed->scancode <= sf::Keyboard::Scancode::Num6) {

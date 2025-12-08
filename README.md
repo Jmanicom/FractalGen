@@ -66,7 +66,6 @@ Then it can be run using `./FractalGen`. If all has been done properly, a window
 * 6 - Phoenix Fractal
 * J - Press once, hover mouse over a point and left click to render Julia set. Press J again to return to 'Mandelbrot' like fractals.
 * Spacebar - Toggle julia set animation
-* C - Toggle color (Switches between 2 palettes. Working on support for custom palettes)
 * F - Toggle fullscreen
 * S - Save screenshot
 
