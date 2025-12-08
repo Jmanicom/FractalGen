@@ -46,7 +46,7 @@ else()
 endif()
 
 # Run these commands to make the file
-# cmake .. -DSML_STATIC_LIBRARIES=TRUE
+# cmake .. -DSFML_STATIC_LIBRARIES=TRUE
 # cmake --build . --config Release
 
 # Run to check for static linking (MSYS64 UCRT)
