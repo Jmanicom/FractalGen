@@ -112,6 +112,8 @@ namespace ev
 
                 // Enter Julia Select Mode
                 }   if (keyPressed->scancode == sf::Keyboard::Scancode::J) {
+                        if (fractal.fType == 5)
+                            break;
                         if (!fractal.drawJul) {
                             fractal.drawJul = true;
                             fractal.previewMode = true;
@@ -146,7 +148,14 @@ namespace ev
                 // Select Fractal to Render using Num Keys
                 }   if (keyPressed->scancode >= sf::Keyboard::Scancode::Num1 && keyPressed->scancode <= sf::Keyboard::Scancode::Num6) {
                         int idx = static_cast<int>(keyPressed->scancode) - static_cast<int>(sf::Keyboard::Scancode::Num1);
-                        fractal.fType = idx;             
+                        fractal.fType = idx;
+                        if (idx == 5) {
+                            fractal.drawJul = true;
+                            fractal.drawMan = false;
+                    }   else {
+                            fractal.drawJul = false;
+                            fractal.drawMan = true;
+                    }          
                 }
             }
         }

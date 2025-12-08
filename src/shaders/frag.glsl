@@ -73,8 +73,10 @@ VEC2 wavy(VEC2 z, VEC2 c) {
 }
 
 VEC2 phoenix(VEC2 z, VEC2 c, VEC2 zpre) {
+    // Phoenix Fractal is hard coded as it is a special Julia Set
+    VEC2 cn = VEC2(0.56667, c.y);
     FLOAT p = -0.5;
-    return cx_sqr(z) + c + p * zpre;
+    return cx_sqr(z) + VEC2(cn.x, 0.0) + p * zpre;
 }
 
 vec3 computeFractal(VEC2 zInit, VEC2 c) {
@@ -82,6 +84,12 @@ vec3 computeFractal(VEC2 zInit, VEC2 c) {
     VEC2 zpre = VEC2(0.0);
     int iter;
     FLOAT zlen2 = 0.0;
+
+    // Rotate orientation for phoenix fractal
+    if (u_fType == 5) {
+        z = VEC2(z.y, -z.x);
+        c = VEC2(c.y, -c.x);
+    }
 
     for (iter = 0; iter < u_maxIter; iter++) {
         VEC2 ztmp = z;
