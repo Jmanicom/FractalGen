@@ -1,4 +1,4 @@
-# Fractal Generator
+# FractalGen
 
 Explore various fractals through a real-time rendered and interactive environment. 
 This project was started as a learning exercise in C++ and [SFML](https://www.sfml-dev.org/documentation/3.0.2/)/[OpenGL](https://www.opengl.org/Documentation/Specs.html) and thus has
