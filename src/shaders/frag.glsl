@@ -112,7 +112,7 @@ vec3 computeFractal(VEC2 zInit, VEC2 c) {
         FLOAT smoothIter = FLOAT(iter) + 1.0 - log2(log2(zlen2));
 
         FLOAT t = sqrt(smoothIter / 50.0);
-        t = mod(t, 1.1);
+        t = mod(t, 1.0);
  
         vec3 color1 = vec3(1.0, 0.8, 0.4);     // Light yellow-orange
         vec3 color2 = vec3(1.0, 0.5, 0.0);     // Bright orange
@@ -138,7 +138,7 @@ vec3 computeFractal(VEC2 zInit, VEC2 c) {
         }
 
         // Subtle brightness variation for texture
-        FLOAT detail = sin(smoothIter * 0.3) * 0.08 + 1.0;
+        FLOAT detail = sin(smoothIter * 0.8) * 0.10 + 0.95;
         color *= detail;
         
         // Contrast boost
