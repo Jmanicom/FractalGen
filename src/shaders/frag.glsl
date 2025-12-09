@@ -92,6 +92,10 @@ vec3 computeFractal(VEC2 zInit, VEC2 c) {
 
     for (iter = 0; iter < u_maxIter; iter++) {
         VEC2 ztmp = z;
+
+        FLOAT m = dot(z, z);
+        z += VEC2(z.y, -z.x) * (1e-12 / (1.0 + m));
+
         switch (u_fType) {
             case 0: z = mandelbrot(z, c); break;
             case 1: z = burningShip(z, c); break;
@@ -103,7 +107,7 @@ vec3 computeFractal(VEC2 zInit, VEC2 c) {
         zpre = ztmp;
 
         zlen2 = dot(z, z);
-        if (zlen2 > 1000.0) break; // Larger escape radius provides more depth for feather fractal
+        if (zlen2 > 4096.0) break; // Larger escape radius provides more depth for feather fractal
     }
 
     if (iter == u_maxIter) {
