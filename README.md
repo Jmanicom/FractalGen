@@ -3,9 +3,8 @@
 Explore various fractals through a real-time rendered and interactive environment. 
 This project was started as a learning exercise in C++ and [SFML](https://www.sfml-dev.org/documentation/3.0.2/)/[OpenGL](https://www.opengl.org/Documentation/Specs.html) and thus has
 some optimization/precision errors due to the naïve beginners approach of rendering the fractals, this namely being the ["escape time"](https://en.wikipedia.org/wiki/Plotting_algorithms_for_the_Mandelbrot_set) 
-algorithim However, I am currently working on a better implementation.
+algorithim. However, I am currently working on a better implementation.
 
-### Rendering of the Julia Set Fractal (c value varies over time).
 <p align="center">
   <img src="Media/Julia.gif" alt="Julia Set Render" width="1000" height="600"/>
 </p>
@@ -42,9 +41,10 @@ The rules are as followed:
 Like the Mandelbrot set, complete this series of steps for every initial z value in the complex plane and you get the Julia set.
 
 ## Compatibility
-This project was built using C++ and SFML on a Windows-based computer. The code is compiled using the g++ compiler and I haven't tested it yet on Mac, however you're welcome to clone the repo and give it a try.
-With that being said, the easiest way to ensure compatibility would be to use the same compiler and OS. Using the [MSYS2 UCRT64](https://www.msys2.org/docs/package-management/) command terminal, we can run the following
-command to download SFML on the compiler path: `pacman -S mingw-w64-x86_64-sfml`. Additional setup steps can be found on the [SFML website](https://www.sfml-dev.org/download/sfml/3.0.2/).
+This project was built using C++ and SFML on a Windows-based computer. The code is compiled using the g++ compiler and hasn't been tested on Mac, 
+however you're welcome to clone the repo and give it a try. With that being said, the easiest way to ensure compatibility would be to use the same 
+compiler and OS. Using the [MSYS2 UCRT64](https://www.msys2.org/docs/package-management/) command terminal, we can run the following command to 
+download SFML on the compiler path: `pacman -S mingw-w64-x86_64-sfml`. Additional setup steps can be found on the [SFML website](https://www.sfml-dev.org/download/sfml/3.0.2/).
 
 Next, we need to compile the program in order to use it. In a terminal prompt, make sure you're in the 'src' project directory and run the following command:
 
@@ -69,12 +69,13 @@ Then it can be run using `./FractalGen`. If all has been done properly, a window
 * F - Toggle fullscreen
 * S - Save screenshot
 
-## Demonstration of Rendering Julia Sets
+## Gallery
+
+### Demonstration of Rendering Julia Sets
 <p align="center">
   <img src="Media/Demo.gif" alt="Demo of Selecting Julia Set" width="1000" height="600"/>
 </p>
 
-## Gallery
 <p align="center">
   <img src="Media/Seahorse Valley.png" alt="Seahorse Valley of Mandelbrot set" width="1000" height="600"/>
   <img src="Media/Tendrils.png" alt="Tendril like figures of the Mandelbrot set" width="1000" height="600"/>
