@@ -44,7 +44,7 @@ Like the Mandelbrot set, complete this series of steps for every initial z value
 This project was built using C++ and SFML on a Windows-based computer. The code is compiled using the g++ compiler and hasn't been tested on Mac, 
 however you're welcome to clone the repo and give it a try. With that being said, the easiest way to ensure compatibility would be to use the same 
 compiler and OS. Using the [MSYS2 UCRT64](https://www.msys2.org/docs/package-management/) command terminal, we can run the following command to 
-download SFML on the compiler path: `pacman -S mingw-w64-x86_64-sfml`. Additional setup steps can be found on the [SFML website](https://www.sfml-dev.org/download/sfml/3.0.2/).
+download SFML on the compiler path: `pacman -S mingw-w64-ucrt-x86_64-sfml`. Additional setup steps can be found on the [SFML website](https://www.sfml-dev.org/download/sfml/3.0.2/).
 
 Next, we need to compile the program in order to use it. In a terminal prompt, make sure you're in the 'src' project directory and run the following command:
 
