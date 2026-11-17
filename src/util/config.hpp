@@ -19,7 +19,7 @@ inline sf::Vector2<FloatType> window_size_f = static_cast<sf::Vector2<FloatType>
 const sf::Vector2<FloatType> center_init = {0.0, 0.0};
 
 const uint32_t max_framerate = 144;
-const int max_iter = 1200;
+const int max_iter = 250;
 const unsigned int supersample = 2;
 const bool key_reapeat = false;
 const bool cursor_visible = false;
@@ -121,7 +121,7 @@ inline void createWindow(sf::RenderWindow& window, sf::RenderTexture& renderText
 
     // Set program icon
     sf::Image icon;
-    if(icon.loadFromFile("../Media/Icon.png"))
+    if(icon.loadFromFile("Media/Icon.png"))
         window.setIcon(icon.getSize(), icon.getPixelsPtr());
     else
         std::cerr << "Failed to load icon" << std::endl;

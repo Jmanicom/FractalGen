@@ -1,11 +1,10 @@
 #ifdef SFML_STATIC
 #endif
 
-#include <SFML/Graphics.hpp>
+// Include SFML + math libraries
 #include <SFML/OpenGL.hpp>
 #include "util/event_handler.hpp"
 #include "util/config.hpp"
-#include <iostream>
 #include <math.h>
 #include <algorithm>
 
@@ -33,7 +32,7 @@ int main() {
     }
 
     // Load default fragment shader - Throw error if can't fetch file
-    if (!shader.loadFromFile("shaders/frag.glsl", sf::Shader::Type::Fragment)) {
+    if (!shader.loadFromFile("src/shaders/frag.glsl", sf::Shader::Type::Fragment)) {
         std::cerr << "Failed to load shader!" << std::endl;
         return -1;
     }
